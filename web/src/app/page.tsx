@@ -29,14 +29,8 @@ export default function Home() {
       const userEmail = session.user?.email || "unknown@example.com";
   
       const mockDatabase: { [key: string]: boolean } = {
-<<<<<<< Updated upstream
-        "munkonggpt@gmail.com": true,  // 이미 가입된 사용자
-        "navygrace8389@gmail.com": false, // 신규 사용자
-        "ryan@sparcs.org": true,
-=======
         "munkonggpt@gmail.com": false,  // 이미 가입된 사용자
         "navygrace8389@gmail.com": true, // 신규 사용자
->>>>>>> Stashed changes
       };
   
       const isUserSignedUp = mockDatabase[userEmail] || false;
