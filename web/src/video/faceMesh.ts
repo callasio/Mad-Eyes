@@ -15,8 +15,18 @@ export async function faceLandmarker() {
   );
 }
 
+let webcam: MediaStream | null = null;
+
 export async function getWebcam(): Promise<MediaStream> {
-  return await navigator.mediaDevices.getUserMedia({ video: true });
+  webcam = await navigator.mediaDevices.getUserMedia({ video: true });
+  return webcam;
+}
+
+export async function stopWebcam() {
+  if (webcam) {
+    webcam.getTracks().forEach(track => track.stop());
+    webcam = null;
+  }
 }
 
 

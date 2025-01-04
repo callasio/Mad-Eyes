@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, session } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -15,6 +15,14 @@ const createWindow = () => {
   const startUrl = 'http://localhost:3000';
   
   mainWindow.loadURL(startUrl);
+
+  session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
+    if (permission === 'media') {
+      callback(true);
+    } else {
+      callback(false);
+    }
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
