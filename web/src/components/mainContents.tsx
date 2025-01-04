@@ -1,13 +1,9 @@
 "use client";
 
 interface MainContentProps {
-  showSignup: boolean;
 }
 
-export default function MainContent({ showSignup }: MainContentProps) {
-  if (showSignup) {
-    return <div></div>; // 회원가입 페이지는 이 부분에서 처리하지 않음
-  }
+export default function MainContent({  }: MainContentProps) {
 
   return (
     <main
