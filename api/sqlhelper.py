@@ -9,11 +9,20 @@ CREATE TABLE IF NOT EXISTS blink (
 );
 """
 
+create_user_table = """
+CREATE TABLE IF NOT EXISTS user (
+  google_id TEXT PRIMARY KEY,
+  username TEXT NOT NULL,
+  email TEXT NOT NULL
+);
+"""
+
 def init_db():
   connection = sqlite3.connect('data.db')
   cursor = connection.cursor()
 
   cursor.execute(create_blink_table)
+  cursor.execute(create_user_table)
   connection.commit()
 
   cursor.close()
