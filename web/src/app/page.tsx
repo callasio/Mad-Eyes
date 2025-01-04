@@ -31,6 +31,7 @@ export default function Home() {
       const mockDatabase: { [key: string]: boolean } = {
         "munkonggpt@gmail.com": true,  // 이미 가입된 사용자
         "navygrace8389@gmail.com": false, // 신규 사용자
+        "ryan@sparcs.org": true,
       };
   
       const isUserSignedUp = mockDatabase[userEmail] || false;
