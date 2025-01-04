@@ -1,5 +1,7 @@
-fastapi
+fastapi[standard]
 uvicorn[standard]
 pydantic
 google-auth
 python-dotenv
+requests
+fastapi-cors

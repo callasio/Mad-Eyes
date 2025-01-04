@@ -34,6 +34,21 @@ def new_connection():
 
   return connection, cursor
 
+def db_execute(todo: callable):
+  connection, cursor = new_connection()
+
+  try:
+    result = todo(cursor)
+    cursor.close()
+    connection.commit()
+    connection.close()
+
+    return result
+  except Exception as e:
+    cursor.close()
+    connection.close()
+    raise e
+
 def get_db():
   connection, cursor = new_connection()
   try:
