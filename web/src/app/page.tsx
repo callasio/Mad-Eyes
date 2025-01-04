@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MainContent from "@/components/mainContents";
 import SignupForm from "@/components/signupForm";
-
+import { themeColor } from "@/constants/colors";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -29,15 +29,23 @@ export default function Home() {
       const userEmail = session.user?.email || "unknown@example.com";
   
       const mockDatabase: { [key: string]: boolean } = {
+<<<<<<< Updated upstream
         "munkonggpt@gmail.com": true,  // 이미 가입된 사용자
         "navygrace8389@gmail.com": false, // 신규 사용자
         "ryan@sparcs.org": true,
+=======
+        "munkonggpt@gmail.com": false,  // 이미 가입된 사용자
+        "navygrace8389@gmail.com": true, // 신규 사용자
+>>>>>>> Stashed changes
       };
   
       const isUserSignedUp = mockDatabase[userEmail] || false;
 
       setIsSignedUp(isUserSignedUp);
       setShowSignup(!isUserSignedUp); // 회원가입 여부에 따라 화면 설정
+      if (!showSignup) {
+        router.push("/dashboard"); 
+      }
     }
   }, [session]);
   
@@ -114,7 +122,7 @@ export default function Home() {
 return (
   <>
   {/* 메인 컨텐츠 */}
-  {showSignup ?  (
+  {showSignup &&  (
     <SignupForm
       profileImage={profileImage}
       handleImageUpload={handleImageUpload}
@@ -122,32 +130,4 @@ return (
       setNickname={setNickname}
     />
   
-  ): 
-  <main
-    style={{
-      backgroundColor: "#302C42",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      color: "white",
-    }}
-  >
-    <div>
-      <h1>Welcome Back, {session?.user?.name}</h1>
-      <button
-        onClick={() => signOut()}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#DB4437",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        Sign Out
-      </button>
-    </div>
-  </main>}</>);}
+  )}</>);}
