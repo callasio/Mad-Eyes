@@ -19,6 +19,18 @@ CREATE TABLE IF NOT EXISTS user_friends (
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE
 );
+""",
+"""
+CREATE TABLE IF NOT EXISTS blink_event (
+  id TEXT NOT NULL,
+  record_id TEXT NOT NULL,
+  minutes INTEGER NOT NULL,
+  count INTEGER NOT NULL,
+  PRIMARY KEY (id, record_id, minutes)
+);
+""",
+"""
+CREATE INDEX IF NOT EXISTS idx_id ON blink_event (id);
 """
 ]
 

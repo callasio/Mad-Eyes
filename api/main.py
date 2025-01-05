@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from blink import blink_init
+from user_friend import user_friend_init
 from user import user_init
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -25,6 +27,8 @@ def read_root():
     return {"Hello": "World"}
 
 user_init(app)
+user_friend_init(app)
+blink_init(app)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
