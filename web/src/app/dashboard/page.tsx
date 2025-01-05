@@ -1,7 +1,6 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { themeColor } from "@/constants/colors"; // themeColor 경로 확인 필요
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BlinkAverageChart from "@/components/blinkAverageChart";
