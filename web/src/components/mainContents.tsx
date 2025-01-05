@@ -1,10 +1,8 @@
 "use client";
 
-interface MainContentProps {
-}
+interface MainContentProps {}
 
-export default function MainContent({  }: MainContentProps) {
-
+export default function MainContent({}: MainContentProps) {
   return (
     <main
       style={{
@@ -40,9 +38,9 @@ export default function MainContent({  }: MainContentProps) {
           lineHeight: "1.6",
         }}
       >
-        Our program monitors your blink rate and <br /> sends notifications
-        when it's time to blink, <br /> helping you protect your eyes and
-        prevent dryness.
+        Our program monitors your blink rate and <br /> sends notifications when
+        it's time to blink, <br /> helping you protect your eyes and prevent
+        dryness.
       </p>
       {/* 버튼 추가 */}
       <button

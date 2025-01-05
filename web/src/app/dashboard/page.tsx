@@ -5,11 +5,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BlinkAverageChart from "@/components/blinkAverageChart";
 import { useAuth } from "@/auth/AuthProvider";
+import GradientButton from "@/components/signup/GradientButton";
 
-
-interface WelcomePageProps {
-    
-}
+interface WelcomePageProps {}
 
 interface Friend {
   id: string;
@@ -18,31 +16,31 @@ interface Friend {
   isOnline: boolean;
   lastSession?: {
     start: Date;
-    end?: Date;  // undefined if still online
-  }
+    end?: Date; // undefined if still online
+  };
 }
 
 // Add this after your existing mockSignupData
 const mockFriends: Friend[] = [
   {
-    id: '1',
-    nickname: 'Sarah',
-    email: 'sarah@example.com',
+    id: "1",
+    nickname: "Sarah",
+    email: "sarah@example.com",
     isOnline: true,
     lastSession: {
       start: new Date(Date.now() - 3600000), // Started 1 hour ago
-    }
+    },
   },
   {
-    id: '2',
-    nickname: 'Mike',
-    email: 'mike@example.com',
+    id: "2",
+    nickname: "Mike",
+    email: "mike@example.com",
     isOnline: true,
     lastSession: {
       start: new Date(Date.now() - 7200000), // Started 2 hours ago
-      end: new Date(Date.now() - 3600000)    // Ended 1 hour ago
-    }
-  }
+      end: new Date(Date.now() - 3600000), // Ended 1 hour ago
+    },
+  },
 ];
 
 const getElapsedTime = (startTime: Date): string => {
@@ -61,7 +59,7 @@ const getElapsedTime = (startTime: Date): string => {
 const getSessionDuration = (session: { start: Date; end?: Date }): string => {
   const startTime = new Date(session.start);
   const endTime = session.end ? new Date(session.end) : new Date();
-  
+
   const diffMs = endTime.getTime() - startTime.getTime();
   const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
   const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
@@ -73,7 +71,7 @@ const getSessionDuration = (session: { start: Date; end?: Date }): string => {
   }
 };
 
-export default function WelcomePage({  }: WelcomePageProps) {
+export default function WelcomePage({}: WelcomePageProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [showDialog, setShowDialog] = useState(false);
@@ -85,7 +83,7 @@ export default function WelcomePage({  }: WelcomePageProps) {
 
   useEffect(() => {
     if (!session) {
-        router.push('/')
+      router.push("/");
     }
   }, [session]);
 
@@ -191,172 +189,204 @@ export default function WelcomePage({  }: WelcomePageProps) {
                   </div>
                 )}
               </div>
-              <div style={{ 
-                fontSize: "18px", 
-                fontWeight: "bold", 
-                marginBottom: "5px",
-                color: "white",
-              }}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  marginBottom: "5px",
+                  color: "white",
+                }}
+              >
                 {user?.nickname}
               </div>
-              <div style={{ 
-                fontSize: "14px", 
-                color: "#ccc" 
-              }}>
+              <div
+                style={{
+                  fontSize: "14px",
+                  color: "#ccc",
+                }}
+              >
                 {user?.email}
               </div>
             </div>
 
             {/* Add this right before the Sign Out Button */}
-<button
-  onClick={() => setShowFriends(!showFriends)}
-  style={{
-    width: "100%",
-    padding: "8px",
-    backgroundColor: "#8176AF",
-    border: "none",
-    borderRadius: "20px",
-    color: "white",
-    cursor: "pointer",
-    fontSize: "14px",
-    fontWeight: "bold",
-    marginTop: "10px",
-    marginBottom: "10px"
-  }}
->
-  {showFriends ? 'Hide Friends' : 'Show Friends'}
-</button>
+            <button
+              onClick={() => setShowFriends(!showFriends)}
+              style={{
+                width: "100%",
+                padding: "8px",
+                backgroundColor: "#8176AF",
+                border: "none",
+                borderRadius: "20px",
+                color: "white",
+                cursor: "pointer",
+                fontSize: "14px",
+                fontWeight: "bold",
+                marginTop: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              {showFriends ? "Hide Friends" : "Show Friends"}
+            </button>
 
-{/* Friends List */}
-{showFriends && (
-  <div style={{
-    marginTop: "10px",
-    borderTop: "1px solid #444",
-    paddingTop: "10px"
-  }}>
-    {mockFriends.map(friend => (
-      <div
-        key={friend.id}
-        onClick={() => setSelectedFriend(friend)}
-        style={{
-          padding: "8px",
-          borderRadius: "8px",
-          backgroundColor: "#3D3D3D",
-          marginBottom: "8px",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px"
-        }}
-      >
-        <div style={{
-          width: "32px",
-          height: "32px",
-          borderRadius: "50%",
-          backgroundColor: "#666",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "white"
-        }}>
-          {friend.nickname[0]}
-        </div>
-        <div>
-          <div style={{ fontWeight: "bold" }}>{friend.nickname}</div>
-          <div style={{ fontSize: "12px", color: "#aaa" }}>{friend.email}</div>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
-
-{/* Friend's Blink Data Popup */}
-{selectedFriend && (
-  <div style={{
-    position: "absolute",
-    left: "320px",
-    top: "0",
-    backgroundColor: "#2D2D2D",
-    borderRadius: "12px",
-    padding: "20px",
-    width: "300px",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)"
-  }}>
-    <button
-      onClick={() => setSelectedFriend(null)}
-      style={{
-        position: "absolute",
-        right: "10px",
-        top: "10px",
-        background: "none",
-        border: "none",
-        color: "white",
-        fontSize: "18px",
-        cursor: "pointer"
-      }}
-    >
-      ×
-    </button>
-    <h3 style={{ marginBottom: "15px", color: "white" }}>{selectedFriend.nickname}'s Session</h3>
-    <div style={{
-      backgroundColor: "#383838",
-      borderRadius: "8px",
-      padding: "20px",
-      color: "white",
-      textAlign: "center"
-    }}>
-      {/* Online Status */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        marginBottom: "15px"
-      }}>
-        <div style={{
-          width: "10px",
-          height: "10px",
-          borderRadius: "50%",
-          backgroundColor: selectedFriend.isOnline ? "#4CAF50" : "#666",
-          marginRight: "10px"
-        }} />
-        <span>{selectedFriend.isOnline ? "Online" : "Offline"}</span>
-      </div>
-
-      {/* Session Info */}
-      {selectedFriend.lastSession && (
-        <div>
-          {selectedFriend.isOnline ? (
-            <>
-              <div>Started:</div>
-              <div style={{ fontSize: "18px", marginBottom: "10px" }}>
-                {selectedFriend.lastSession.start.toLocaleTimeString()}
+            {/* Friends List */}
+            {showFriends && (
+              <div
+                style={{
+                  marginTop: "10px",
+                  borderTop: "1px solid #444",
+                  paddingTop: "10px",
+                }}
+              >
+                {mockFriends.map((friend) => (
+                  <div
+                    key={friend.id}
+                    onClick={() => setSelectedFriend(friend)}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      backgroundColor: "#3D3D3D",
+                      marginBottom: "8px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        backgroundColor: "#666",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                      }}
+                    >
+                      {friend.nickname[0]}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: "bold" }}>
+                        {friend.nickname}
+                      </div>
+                      <div style={{ fontSize: "12px", color: "#aaa" }}>
+                        {friend.email}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div>Duration:</div>
-              <div style={{ fontSize: "24px", fontWeight: "bold" }}>
-                {getElapsedTime(selectedFriend.lastSession.start)}
-              </div>
-            </>
-          ) : (
-            <>
-              <div>Last Session:</div>
-              <div style={{ fontSize: "16px", marginBottom: "10px" }}>
-                {selectedFriend.lastSession.start.toLocaleTimeString()} - {selectedFriend.lastSession.end?.toLocaleTimeString()}
-              </div>
-              <div>Duration:</div>
-              <div style={{ fontSize: "24px", fontWeight: "bold" }}>
-                {getSessionDuration(selectedFriend.lastSession)}
-              </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  </div>
-)}
+            )}
 
-{/* Your existing Sign Out Button */}
+            {/* Friend's Blink Data Popup */}
+            {selectedFriend && (
+              <div
+                style={{
+                  position: "absolute",
+                  left: "320px",
+                  top: "0",
+                  backgroundColor: "#2D2D2D",
+                  borderRadius: "12px",
+                  padding: "20px",
+                  width: "300px",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <button
+                  onClick={() => setSelectedFriend(null)}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "10px",
+                    background: "none",
+                    border: "none",
+                    color: "white",
+                    fontSize: "18px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ×
+                </button>
+                <h3 style={{ marginBottom: "15px", color: "white" }}>
+                  {selectedFriend.nickname}'s Session
+                </h3>
+                <div
+                  style={{
+                    backgroundColor: "#383838",
+                    borderRadius: "8px",
+                    padding: "20px",
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                >
+                  {/* Online Status */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "10px",
+                        height: "10px",
+                        borderRadius: "50%",
+                        backgroundColor: selectedFriend.isOnline
+                          ? "#4CAF50"
+                          : "#666",
+                        marginRight: "10px",
+                      }}
+                    />
+                    <span>
+                      {selectedFriend.isOnline ? "Online" : "Offline"}
+                    </span>
+                  </div>
 
-        {/* Sign Out Button */}
-        <button
+                  {/* Session Info */}
+                  {selectedFriend.lastSession && (
+                    <div>
+                      {selectedFriend.isOnline ? (
+                        <>
+                          <div>Started:</div>
+                          <div
+                            style={{ fontSize: "18px", marginBottom: "10px" }}
+                          >
+                            {selectedFriend.lastSession.start.toLocaleTimeString()}
+                          </div>
+                          <div>Duration:</div>
+                          <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                            {getElapsedTime(selectedFriend.lastSession.start)}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div>Last Session:</div>
+                          <div
+                            style={{ fontSize: "16px", marginBottom: "10px" }}
+                          >
+                            {selectedFriend.lastSession.start.toLocaleTimeString()}{" "}
+                            -{" "}
+                            {selectedFriend.lastSession.end?.toLocaleTimeString()}
+                          </div>
+                          <div>Duration:</div>
+                          <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                            {getSessionDuration(selectedFriend.lastSession)}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Your existing Sign Out Button */}
+
+            {/* Sign Out Button */}
+            <button
               onClick={() => signOut()}
               style={{
                 width: "100%",
@@ -376,17 +406,22 @@ export default function WelcomePage({  }: WelcomePageProps) {
           </div>
         )}
 
+        <GradientButton
+          text={"Start Recording"}
+          onClick={function (): void {
+            console.log("Clicked");
+          }}
+        />
       </header>
-    
-     {/* 메인 컨텐츠 */}
-     <main
+
+      {/* 메인 컨텐츠 */}
+      <main
         style={{
           backgroundColor: "#302C42",
           height: "calc(100vh - 65px)", // 헤더 제외한 높이
           display: "flex",
           justifyContent: "center",
           alignItems: "flex-start",
-    
         }}
       >
         {/* 둥근 모서리 프레임 */}
@@ -397,7 +432,7 @@ export default function WelcomePage({  }: WelcomePageProps) {
             width: "90%", // 프레임 너비,
             marginTop: "30px",
             minWidth: "800px",
-            maxWidth:"1000px"    ,   
+            maxWidth: "1000px",
             height: "500px",
             marginLeft: "20px",
             marginRight: "20px",
@@ -405,8 +440,7 @@ export default function WelcomePage({  }: WelcomePageProps) {
             textAlign: "center",
           }}
         >
-             <BlinkAverageChart />
-          
+          <BlinkAverageChart />
         </div>
       </main>
     </>

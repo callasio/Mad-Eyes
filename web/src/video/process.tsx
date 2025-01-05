@@ -1,8 +1,8 @@
 "use client";
 
-import React, { createContext, useEffect } from 'react';
+import React, { createContext, useEffect } from "react";
 import { faceLandmarker, getWebcam, stopWebcam } from "@/video/faceMesh";
-import { getIsBlinked } from './eyes';
+import { getIsBlinked } from "./eyes";
 
 const RecordingContext = createContext<{
   isRecording: boolean;
@@ -15,7 +15,9 @@ const RecordingContext = createContext<{
   setOnBlink: () => {},
 });
 
-export const RecordingProvider = ({ children }: {
+export const RecordingProvider = ({
+  children,
+}: {
   children: React.ReactNode;
 }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -25,7 +27,7 @@ export const RecordingProvider = ({ children }: {
   const [isRecording, setIsRecording] = React.useState<boolean>(false);
 
   const [onBlink, setOnBlink] = React.useState<() => void>(() => () => {});
-  
+
   const getFaceLandmark = async () => {
     const faceLandmarkerInstance = await faceLandmarker();
     let animationFrameId: number = -1;
@@ -38,7 +40,7 @@ export const RecordingProvider = ({ children }: {
       videoRef.current!.autoplay = true;
       videoRef.current!.onloadedmetadata = () => {
         renderLoop();
-      }
+      };
     } else {
       cancelAnimationFrame(animationFrameId);
       await stopWebcam();
@@ -56,11 +58,9 @@ export const RecordingProvider = ({ children }: {
         setIsBlinked(getIsBlinked(result));
       }
 
-      animationFrameId = requestAnimationFrame(
-        () => renderLoop(currentTime)
-      );
+      animationFrameId = requestAnimationFrame(() => renderLoop(currentTime));
     }
-  }
+  };
 
   useEffect(() => {
     getFaceLandmark();
@@ -73,13 +73,21 @@ export const RecordingProvider = ({ children }: {
     }
   }, [isBlinked]);
 
-  return <RecordingContext.Provider value={{ isRecording, setIsRecording, videoRef, setOnBlink }}>
-    {isRecording && 
-      <video ref={videoRef} style={{
-        display: 'none'
-      }}/>}
-    {children}
-  </RecordingContext.Provider>;
+  return (
+    <RecordingContext.Provider
+      value={{ isRecording, setIsRecording, videoRef, setOnBlink }}
+    >
+      {isRecording && (
+        <video
+          ref={videoRef}
+          style={{
+            display: "none",
+          }}
+        />
+      )}
+      {children}
+    </RecordingContext.Provider>
+  );
 };
 
 export const useRecording = () => React.useContext(RecordingContext);

@@ -1,8 +1,26 @@
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title, Tooltip, Legend, CategoryScale, ChartData } from "chart.js";
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  ChartData,
+} from "chart.js";
 
 // Chart.js에서 사용될 컴포넌트 등록
-ChartJS.register(LineElement, PointElement, LinearScale, Title, Tooltip, Legend, CategoryScale);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  CategoryScale,
+);
 
 // mockData 선언
 const mockData = [
@@ -56,7 +74,12 @@ export default function BlinkAverageChart() {
           const { ctx, chartArea } = chart;
           if (!chartArea) return undefined;
 
-          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          const gradient = ctx.createLinearGradient(
+            0,
+            chartArea.top,
+            0,
+            chartArea.bottom,
+          );
           gradient.addColorStop(0, "#9DA6FE"); // 가장 진한 색
           gradient.addColorStop(1, "#DADEFF"); // 가장 연한 색
           return gradient;
@@ -74,51 +97,56 @@ export default function BlinkAverageChart() {
   // 옵션 설정
   const options = {
     responsive: true,
-  plugins: {
-    legend: {
-      display: true,
-      position: "top",
-      labels: {
-        color: "black",
-        
-      },
-    },
-  },
-  scales: {
-    x: {
-      beginAtZero: true,
-      ticks: {
-        color: "black", // X축 라벨 색상
-        font: {
-          weight: "bold", // X축 라벨 글씨 두께
-          size: 14, // 글씨 크기 (옵션)
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          color: "black",
         },
       },
-      grid: {
-        color: "transparent", // X축 격자선 색상
-        lineWidth: 2, // X축 격자선 두께
-      },
     },
-    y: {
-      beginAtZero: true,
-      ticks: {
-        color: "#9E9FA7", // Y축 라벨 색상
-        font: {
-          weight: "bold", // Y축 라벨 글씨 두께
-          size: 14, // 글씨 크기 (옵션)
+    scales: {
+      x: {
+        beginAtZero: true,
+        ticks: {
+          color: "black", // X축 라벨 색상
+          font: {
+            weight: "bold", // X축 라벨 글씨 두께
+            size: 14, // 글씨 크기 (옵션)
+          },
+        },
+        grid: {
+          color: "transparent", // X축 격자선 색상
+          lineWidth: 2, // X축 격자선 두께
         },
       },
-      grid: {
-        color: "#808080", // Y축 격자선 색상
-        lineWidth: 2, // Y축 격자선 두께 (필요하면 다른 색으로 설정 가능)
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: "#9E9FA7", // Y축 라벨 색상
+          font: {
+            weight: "bold", // Y축 라벨 글씨 두께
+            size: 14, // 글씨 크기 (옵션)
+          },
+        },
+        grid: {
+          color: "#808080", // Y축 격자선 색상
+          lineWidth: 2, // Y축 격자선 두께 (필요하면 다른 색으로 설정 가능)
+        },
       },
     },
-  },
-  
   };
 
   return (
-    <div style={{ width: "90%", maxWidth: "800px", margin: "0 auto", paddingTop: "20px" }}>
+    <div
+      style={{
+        width: "90%",
+        maxWidth: "800px",
+        margin: "0 auto",
+        paddingTop: "20px",
+      }}
+    >
       <Line data={data} options={options as any} />
     </div>
   );

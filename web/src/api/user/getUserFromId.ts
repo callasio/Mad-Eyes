@@ -3,8 +3,8 @@ import { getUrl } from "../utils/url";
 import { GetUserResponse } from "./getUser";
 
 export async function getUserFromId(id: string): Promise<GetUserResponse> {
-  const res = await fetch(getUrl('user', id), {
-    method: 'GET',
+  const res = await fetch(getUrl("user", id), {
+    method: "GET",
   });
 
   if (res.status !== 200) return { success: false };
@@ -16,8 +16,9 @@ export async function getUserFromId(id: string): Promise<GetUserResponse> {
       id: data.id,
       email: data.email,
       nickname: data.nickname,
-      profilePicture: data.profilePicture ?
-        pictureUrlFromString(data.profilePicture) : undefined,
-    }
+      profilePicture: data.profilePicture
+        ? pictureUrlFromString(data.profilePicture)
+        : undefined,
+    },
   };
 }

@@ -10,12 +10,14 @@ export default function Home() {
 
   return (
     <>
-      {loading? <div>Loading...</div> :
-
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
         <>
           <Header />
           <MainContent />
-        </>}
+        </>
+      )}
     </>
   );
 }

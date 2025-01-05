@@ -19,7 +19,7 @@ export default function SignupPage() {
   const [nickname, setNickname] = useState("");
   const [agree, setAgree] = useState(false);
   const [profileImage, setProfileImage] = useState("");
-  
+
   const { checkSignupState: updateSignupState } = useAuth();
 
   const { data: session } = useSession();
@@ -33,7 +33,7 @@ export default function SignupPage() {
       };
       reader.readAsDataURL(file);
     }
-  }
+  };
 
   const getProfileImageBlob = async () => {
     if (profileImage) {
@@ -42,7 +42,7 @@ export default function SignupPage() {
       return blob;
     }
     return null;
-  }
+  };
 
   return (
     <main
@@ -57,7 +57,15 @@ export default function SignupPage() {
       <GradientFill>
         <Header2 text="JOIN MADEYES" />
         <Separator />
-        <div style={{ display: "flex", flex: 1, flexDirection: "column", alignItems: "center", gap: "30px" }}>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "30px",
+          }}
+        >
           <div style={{ position: "relative" }}>
             <div
               style={{
@@ -86,39 +94,49 @@ export default function SignupPage() {
                   }}
                 />
               ) : (
-                <AddIcon style={{ color: themeColor.white, fontSize: "40px" }}/>
+                <AddIcon
+                  style={{ color: themeColor.white, fontSize: "40px" }}
+                />
               )}
             </div>
-            
-            {profileImage && 
-                <div style={{
-                position: "absolute",
-                zIndex: 1,
-                bottom: "5px",
-                right: "5px",
-                borderRadius: "50%",
-                overflow: "hidden",
-                backgroundColor: themeColor.white,
-                padding: "5px",
-                flexDirection: "column",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-                }}
-                onClick={() => setProfileImage("")}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#ddd")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = themeColor.white)}
-                >
-                <ClearIcon style={{
-                  color: themeColor.primary,
+
+            {profileImage && (
+              <div
+                style={{
+                  position: "absolute",
+                  zIndex: 1,
+                  bottom: "5px",
+                  right: "5px",
                   borderRadius: "50%",
-                  fontSize: "20px",
+                  overflow: "hidden",
+                  backgroundColor: themeColor.white,
+                  padding: "5px",
+                  flexDirection: "column",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s",
                 }}
                 onClick={() => setProfileImage("")}
-                /></div>}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#ddd")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = themeColor.white)
+                }
+              >
+                <ClearIcon
+                  style={{
+                    color: themeColor.primary,
+                    borderRadius: "50%",
+                    fontSize: "20px",
+                  }}
+                  onClick={() => setProfileImage("")}
+                />
+              </div>
+            )}
           </div>
           <input
             type="file"
@@ -127,7 +145,9 @@ export default function SignupPage() {
             onChange={onProfileImageChange}
             style={{ display: "none" }}
           />
-          <div style={{ marginBottom: "10px", textAlign: "left", width: "180px" }}>
+          <div
+            style={{ marginBottom: "10px", textAlign: "left", width: "180px" }}
+          >
             <label
               htmlFor="nickname"
               style={{
@@ -160,7 +180,15 @@ export default function SignupPage() {
               onBlur={(e) => (e.target.style.borderColor = "#ddd")}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "22px", marginTop: "35px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "22px",
+              marginTop: "35px",
+            }}
+          >
             <input
               type="checkbox"
               id="agree"
@@ -183,23 +211,22 @@ export default function SignupPage() {
               I agree to the Privacy Policy
             </label>
           </div>
-          <GradientButton text="Let's Go!" onClick={async () => {
-            const blob = await getProfileImageBlob();
-            if (!session) {
-              alert("Please sign in first");
-              return;
-            }
-            const res = await postUserRegister(
-              nickname,
-              blob,
-              session,
-            )
+          <GradientButton
+            text="Let's Go!"
+            onClick={async () => {
+              const blob = await getProfileImageBlob();
+              if (!session) {
+                alert("Please sign in first");
+                return;
+              }
+              const res = await postUserRegister(nickname, blob, session);
 
-            if (res.status === "existing" || res.status === "success") {
-              updateSignupState();
-              return;
-            }
-          }} />
+              if (res.status === "existing" || res.status === "success") {
+                updateSignupState();
+                return;
+              }
+            }}
+          />
         </div>
       </GradientFill>
     </main>

@@ -15,26 +15,28 @@ export interface GetUserResponse {
 }
 
 export async function getUser(session: Session): Promise<GetUserResponse> {
-  const res = await fetch(getUrl('user'), {
-    method: 'GET',
+  const res = await fetch(getUrl("user"), {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${session?.idToken}`,
-    }
-  })
-  
+    },
+  });
+
   if (res.status !== 200) return { success: false };
   const data = await res.json();
 
   if (data.registered)
-    return { 
+    return {
       success: true,
-        user: {
-          id: data.id,
-          email: data.email,
-          nickname: data.nickname,
-          profilePicture: data.profilePicture ?
-            pictureUrlFromString(data.profilePicture) : undefined,
-      }};
-  
+      user: {
+        id: data.id,
+        email: data.email,
+        nickname: data.nickname,
+        profilePicture: data.profilePicture
+          ? pictureUrlFromString(data.profilePicture)
+          : undefined,
+      },
+    };
+
   return { success: true };
 }

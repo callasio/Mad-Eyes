@@ -1,5 +1,5 @@
-import { signIn, signOut, useSession } from 'next-auth/react';
-import React from 'react';
+import { signIn, signOut, useSession } from "next-auth/react";
+import React from "react";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -16,11 +16,15 @@ const Header = () => {
         color: "white",
       }}
     >
-      <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>Mad Eyes</h1>
+      <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+        Mad Eyes
+      </h1>
       <div style={{ marginLeft: "auto" }}>
         {!session ? (
           <button
-            onClick={() => { signIn("google"); }}
+            onClick={() => {
+              signIn("google");
+            }}
             style={{
               display: "flex",
               alignItems: "center",

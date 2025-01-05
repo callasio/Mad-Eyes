@@ -1,6 +1,6 @@
 "use client";
 
-import { Geist, Geist_Mono,Montserrat } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import { RecordingProvider } from "@/video/process";
@@ -28,12 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable}`}
+      >
         <RecordingProvider>
           <SessionProvider>
-            <AuthProvider>
-            {children}
-            </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
           </SessionProvider>
         </RecordingProvider>
       </body>
