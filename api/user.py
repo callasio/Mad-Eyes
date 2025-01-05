@@ -1,3 +1,4 @@
+import base64
 from fastapi import Depends, FastAPI, File, Form, UploadFile
 from pydantic import BaseModel
 
@@ -19,11 +20,13 @@ def user_init(app: FastAPI):
     if (user_db is None):
       return {"registered": False}
     
+    profile_picture_base64 = base64.b64encode(user_db[3]).decode('utf-8') if user_db[3] else None
+    
     return {
       "registered": True,
       "email": user_db[1],
       "nickname": user_db[2],
-      "profilePicture": user_db[3],
+      "profilePicture": profile_picture_base64,
     }
 
   @app.post("/user/register")
