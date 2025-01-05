@@ -112,3 +112,32 @@ def user_init(app: FastAPI):
     db_execute(lambda cursor:
       cursor.execute("DELETE FROM users WHERE id=?", (user_google.google_id,)))
     return {"status": "success"}
+  
+  @app.post("/user/update")
+  async def update_user(
+    nickname: str = Form(...),
+    profilePicture: UploadFile | None = File(None),
+    token: str=Depends(oauth2_scheme)
+  ):
+    user_google = await get_current_user(token)
+    user_db = db_execute(lambda cursor:
+      cursor.execute("SELECT * FROM users WHERE id=?", (user_google.google_id,)).fetchone()
+      )
+    
+    if (user_db is None):
+      return {"status": "nonexistent"}
+    
+    profile_picture_data = await profilePicture.read() if profilePicture is not None else None
+    
+    db_execute(lambda cursor:
+      cursor.execute("""
+        UPDATE users
+        SET nickname=?, profilePicture=?
+        WHERE id=?
+        """, (
+          nickname,
+          profile_picture_data,
+          user_google.google_id
+        ))
+    )
+    return {"status": "success"}
