@@ -21,9 +21,9 @@ def user_init(app: FastAPI):
     
     return {
       "registered": True,
-      "id": user_db[0],
-      "username": user_db[1],
-      "email": user_db[2],
+      "email": user_db[1],
+      "nickname": user_db[2],
+      "profilePicture": user_db[3],
     }
 
   @app.post("/user/register")

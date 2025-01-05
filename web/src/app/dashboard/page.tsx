@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BlinkAverageChart from "@/components/blinkAverageChart";
+import { useAuth } from "@/auth/AuthProvider";
 
 
 interface WelcomePageProps {
@@ -12,13 +13,6 @@ interface WelcomePageProps {
 
 export default function WelcomePage({  }: WelcomePageProps) {
   const { data: session } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) {
-        router.push('/')
-    }
-  }, [session])
 
   return (
     <>
