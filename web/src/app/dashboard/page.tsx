@@ -14,12 +14,12 @@ interface WelcomePageProps {
 interface Friend {
   id: string;
   nickname: string;
-  profileImage?: string;
   email: string;
-  blinkData: {
-    day: string;
-    count: number;
-  }[];
+  isOnline: boolean;
+  lastSession?: {
+    start: Date;
+    end?: Date;  // undefined if still online
+  }
 }
 
 // Add this after your existing mockSignupData
@@ -28,31 +28,50 @@ const mockFriends: Friend[] = [
     id: '1',
     nickname: 'Sarah',
     email: 'sarah@example.com',
-    blinkData: [
-      { day: 'Mon', count: 15 },
-      { day: 'Tue', count: 18 },
-      { day: 'Wed', count: 12 },
-      { day: 'Thu', count: 20 },
-      { day: 'Fri', count: 16 },
-      { day: 'Sat', count: 14 },
-      { day: 'Sun', count: 13 }
-    ]
+    isOnline: true,
+    lastSession: {
+      start: new Date(Date.now() - 3600000), // Started 1 hour ago
+    }
   },
   {
     id: '2',
     nickname: 'Mike',
     email: 'mike@example.com',
-    blinkData: [
-      { day: 'Mon', count: 12 },
-      { day: 'Tue', count: 14 },
-      { day: 'Wed', count: 16 },
-      { day: 'Thu', count: 15 },
-      { day: 'Fri', count: 19 },
-      { day: 'Sat', count: 17 },
-      { day: 'Sun', count: 11 }
-    ]
+    isOnline: true,
+    lastSession: {
+      start: new Date(Date.now() - 7200000), // Started 2 hours ago
+      end: new Date(Date.now() - 3600000)    // Ended 1 hour ago
+    }
   }
 ];
+
+const getElapsedTime = (startTime: Date): string => {
+  const now = new Date();
+  const diffMs = now.getTime() - startTime.getTime();
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffHrs > 0) {
+    return `${diffHrs}h ${diffMins}m`;
+  } else {
+    return `${diffMins}m`;
+  }
+};
+
+const getSessionDuration = (session: { start: Date; end?: Date }): string => {
+  const startTime = new Date(session.start);
+  const endTime = session.end ? new Date(session.end) : new Date();
+  
+  const diffMs = endTime.getTime() - startTime.getTime();
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffHrs > 0) {
+    return `${diffHrs}h ${diffMins}m`;
+  } else {
+    return `${diffMins}m`;
+  }
+};
 
 export default function WelcomePage({  }: WelcomePageProps) {
   const { data: session } = useSession();
@@ -278,23 +297,58 @@ export default function WelcomePage({  }: WelcomePageProps) {
     >
       ×
     </button>
-    <h3 style={{ color: "white" }}>{selectedFriend.nickname}'s Blink Data</h3>
-    <div style={{ marginTop: "15px" }}>
-      {selectedFriend.blinkData.map((data, index) => (
-        <div
-          key={index}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "8px 0",
-            borderBottom: "1px solid #444",
-            color: "white"
-          }}
-        >
-          <span>{data.day}</span>
-          <span>{data.count} blinks/min</span>
+    <h3 style={{ marginBottom: "15px", color: "white" }}>{selectedFriend.nickname}'s Session</h3>
+    <div style={{
+      backgroundColor: "#383838",
+      borderRadius: "8px",
+      padding: "20px",
+      color: "white",
+      textAlign: "center"
+    }}>
+      {/* Online Status */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "15px"
+      }}>
+        <div style={{
+          width: "10px",
+          height: "10px",
+          borderRadius: "50%",
+          backgroundColor: selectedFriend.isOnline ? "#4CAF50" : "#666",
+          marginRight: "10px"
+        }} />
+        <span>{selectedFriend.isOnline ? "Online" : "Offline"}</span>
+      </div>
+
+      {/* Session Info */}
+      {selectedFriend.lastSession && (
+        <div>
+          {selectedFriend.isOnline ? (
+            <>
+              <div>Started:</div>
+              <div style={{ fontSize: "18px", marginBottom: "10px" }}>
+                {selectedFriend.lastSession.start.toLocaleTimeString()}
+              </div>
+              <div>Duration:</div>
+              <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                {getElapsedTime(selectedFriend.lastSession.start)}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>Last Session:</div>
+              <div style={{ fontSize: "16px", marginBottom: "10px" }}>
+                {selectedFriend.lastSession.start.toLocaleTimeString()} - {selectedFriend.lastSession.end?.toLocaleTimeString()}
+              </div>
+              <div>Duration:</div>
+              <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                {getSessionDuration(selectedFriend.lastSession)}
+              </div>
+            </>
+          )}
         </div>
-      ))}
+      )}
     </div>
   </div>
 )}
