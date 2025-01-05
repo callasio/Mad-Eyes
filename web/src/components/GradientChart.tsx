@@ -1,3 +1,4 @@
+import { themeColor } from "@/constants/colors";
 import Stack from "@mui/material/Stack";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { LineChart, areaElementClasses } from "@mui/x-charts/LineChart";
@@ -16,11 +17,19 @@ export default function GradientChart({
   return (
     <Stack direction="column" width="100%" spacing={1}>
       <LineChart
-        xAxis={xAxis}
+        xAxis={xAxis.map((x) => ({
+          ...x,
+          disableTicks: true,
+          tickLabelInterval: () => false,
+          stroke: themeColor.primary,
+        }))}
         yAxis={[
           {
             min: 0,
             max: Math.max(...data) * 1.2,
+            disableTicks: true,
+            tickLabelInterval: () => false,
+            stroke: themeColor.primary,
           },
         ]}
         series={[{ data, showMark: false, area: true }]}
@@ -57,7 +66,7 @@ function ColorPalette({ id, colors }: { id: string; colors: string[] }) {
         gradientUnits="userSpaceOnUse" // Use the SVG coordinate instead of the component ones.
       >
         <stop stopColor={colors[0]} />
-        <stop offset="1" stopColor={colors[1]}/>
+        <stop offset="1" stopColor={colors[1]} stopOpacity={0}/>
       </linearGradient>
     </defs>
   );

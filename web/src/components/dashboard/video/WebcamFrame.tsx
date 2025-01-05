@@ -19,9 +19,10 @@ const VideoFrame: React.FC = () => {
     if (isWebcamOn && ref.current && videoRef?.current) {
       ref.current.srcObject = videoRef.current.srcObject;
     } else {
-      ref.current!.srcObject = null;
+      if (ref.current)
+        ref.current!.srcObject = null;
     }
-  }, [isWebcamOn]);
+  }, [isWebcamOn, ref]);
 
   return (
     <div style={{
@@ -34,7 +35,7 @@ const VideoFrame: React.FC = () => {
     }}>
       <div
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#262335",
           borderRadius: "25px",
           flex: 2,
           overflow: "hidden",
@@ -46,7 +47,6 @@ const VideoFrame: React.FC = () => {
           alignItems: "center",
           justifyContent: "center",
           position: "relative",
-          border: "3px solid #262335",
         }}
       >
         {!isWebcamOn && (
@@ -57,7 +57,7 @@ const VideoFrame: React.FC = () => {
               left: 0,
               width: "100%",
               height: "100%",
-              background: themeColor.primary + "BB",
+              background: "#26233566",
               backdropFilter: "blur(10px)",
               zIndex: 1,
               display: "flex",
