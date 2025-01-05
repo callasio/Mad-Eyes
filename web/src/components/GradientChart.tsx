@@ -27,6 +27,9 @@ export default function GradientChart({
         series={[{ data, showMark: false, area: true }]}
         height={200}
         margin={{ top: 20, bottom: 30, left: 75 }}
+        tooltip={{ trigger: 'none' }}
+        disableAxisListener
+        disableLineItemHighlight
         colors={[
           color
         ]}
@@ -56,8 +59,8 @@ function ColorPalette({ id, color }: { id: string; color: string }) {
         y2={`${svgHeight}px`}
         gradientUnits="userSpaceOnUse" // Use the SVG coordinate instead of the component ones.
       >
-        <stop stop-color={color} stop-opacity="0.4" />
-        <stop offset="1" stop-color={color} stop-opacity="0"/>
+        <stop stopColor={color} stopOpacity="0.4" />
+        <stop offset="1" stopColor={color} stopOpacity="0"/>
       </linearGradient>
     </defs>
   );
