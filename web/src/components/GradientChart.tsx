@@ -15,12 +15,20 @@ export default function GradientChart({
   colors,
 }: GradientChartProps) {
   return (
+    <div
+      style={{
+        width: "500px",
+        height: "300px",
+        border: "2px solid #9E9FA7", 
+        boxSizing: "border-box", // ensures border is included in total width/height
+      }}
+    >
     <Stack direction="column" width="100%" spacing={1}>
       <LineChart
         xAxis={xAxis.map((x) => ({
           ...x,
           disableTicks: true,
-          tickLabelInterval: () => false,
+          tickLabelInterval: () => true,
           stroke: themeColor.primary,
         }))}
         yAxis={[
@@ -28,7 +36,7 @@ export default function GradientChart({
             min: 0,
             max: Math.max(...data) * 1.2,
             disableTicks: true,
-            tickLabelInterval: () => false,
+            tickLabelInterval: () => true,
             stroke: themeColor.primary,
           },
         ]}
@@ -48,6 +56,7 @@ export default function GradientChart({
         <ColorPalette id="paint0_linear_45_2" colors={colors} />
       </LineChart>
     </Stack>
+    </div>
   );
 }
 

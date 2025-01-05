@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/auth/AuthProvider";
 import GradientButton from "@/components/GradientButton";
-import DashboardDialog from "@/components/dashboard/dialog/dialog";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 import { useRecording } from "@/video/RecordingProvider";
 import WebcamFrame from "@/components/dashboard/video/WebcamFrame";
+import DashboardDialog from "@/components/dashboard/dialog/dialog";
 
 interface WelcomePageProps {}
 
@@ -49,7 +51,6 @@ export default function WelcomePage({}: WelcomePageProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [showDialog, setShowDialog] = useState(false);
-
   const { isRecording, setIsRecording } = useRecording();
 
   const { user } = useAuth();

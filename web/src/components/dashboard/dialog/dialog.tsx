@@ -39,6 +39,13 @@ const DashboardDialog: React.FC<DialogProps> = ({
     return `${minutes} minutes`;
   };
 
+  {/* Search State */}
+  const [searchQuery, setSearchQuery] = useState('');
+  const filteredFriends = friends.filter(friend => 
+    friend.nickname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    friend.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div
       style={{
@@ -149,9 +156,57 @@ const DashboardDialog: React.FC<DialogProps> = ({
       >
         {showFriends ? "Hide Friends" : "Show Friends"}
       </button>
+      
+
+
 
       {showFriends && (
-        <FriendsFrame friends={friends} setSelectedFriend={setSelectedFriend} />
+      <>
+
+        {/* Search Bar */}
+        <div style={{
+          width: '100%',
+          marginBottom: '15px',
+          position: 'relative'
+        }}>
+          {/* Search icon */}
+          <div style={{
+            position: 'absolute',
+            right: '12px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: '#999'
+          }}>
+            🔍
+          </div>
+          <input
+            type="text"
+            placeholder="Search friends..."
+            style={{
+              width: '100%',
+              padding: '8px 12px',
+              backgroundColor: '#383838',
+              border: 'none',
+              borderRadius: '8px',
+              color: 'white',
+              fontSize: '14px',
+              outline: 'none'
+            }}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div style={{
+            position: 'absolute',
+            right: '12px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: '#999'
+          }}>
+            🔍
+          </div>
+        </div>
+          <FriendsFrame friends={filteredFriends} setSelectedFriend={setSelectedFriend} />
+        </>
       )}
 
       {selectedFriend && (

@@ -35,7 +35,7 @@ const VideoFrame: React.FC = () => {
     }}>
       <div
         style={{
-          backgroundColor: "#262335",
+          background: "radial-gradient(circle at center, #433D60, #211E2E)",
           borderRadius: "25px",
           flex: 2,
           overflow: "hidden",
