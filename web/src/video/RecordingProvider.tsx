@@ -6,11 +6,13 @@ import { getIsBlinked } from "./eyes";
 
 const RecordingContext = createContext<{
   isRecording: boolean;
+  isWebcamOn: boolean;
   setIsRecording: (isRecording: boolean) => void;
   setOnBlink: (onBlink: () => void) => void;
   videoRef?: React.RefObject<HTMLVideoElement | null>;
 }>({
   isRecording: false,
+  isWebcamOn: false,
   setIsRecording: () => {},
   setOnBlink: () => {},
 });
@@ -25,6 +27,7 @@ export const RecordingProvider = ({
   const [blinkCount, setBlinkCount] = React.useState<number>(0);
   const [isBlinked, setIsBlinked] = React.useState<boolean>(false);
   const [isRecording, setIsRecording] = React.useState<boolean>(false);
+  const [isWebcamOn, setIsWebcamOn] = React.useState<boolean>(false);
 
   const [onBlink, setOnBlink] = React.useState<() => void>(() => () => {});
 
@@ -38,12 +41,14 @@ export const RecordingProvider = ({
       // video.style.display = 'none';
       videoRef.current!.srcObject = webcam;
       videoRef.current!.autoplay = true;
+      setIsWebcamOn(true);
       videoRef.current!.onloadedmetadata = () => {
         renderLoop();
       };
     } else {
       cancelAnimationFrame(animationFrameId);
       await stopWebcam();
+      setIsWebcamOn(false);
       return;
     }
 
@@ -75,7 +80,7 @@ export const RecordingProvider = ({
 
   return (
     <RecordingContext.Provider
-      value={{ isRecording, setIsRecording, videoRef, setOnBlink }}
+      value={{ isRecording, isWebcamOn, setIsRecording, videoRef, setOnBlink }}
     >
       {isRecording && (
         <video

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRecording } from "@/video/process";
+import { useRecording } from "@/video/RecordingProvider";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 

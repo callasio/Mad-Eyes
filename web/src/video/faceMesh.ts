@@ -16,6 +16,7 @@ export async function faceLandmarker() {
 let webcam: MediaStream | null = null;
 
 export async function getWebcam(): Promise<MediaStream> {
+  if (webcam) return webcam;
   webcam = await navigator.mediaDevices.getUserMedia({ video: true });
   return webcam;
 }

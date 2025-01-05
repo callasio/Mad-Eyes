@@ -9,8 +9,10 @@ import GradientButton from "@/components/GradientButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import DashboardDialog from "@/components/dashboard/dialog/dialog";
-import { useRecording } from "@/video/process";
-import BlinkChart from "@/components/dashboard/graph/BlinkChart";
+import { useRecording } from "@/video/RecordingProvider";
+import BlinkChart from "@/components/dashboard/video/BlinkChart";
+import { themeColor } from "@/constants/colors";
+import WebcamFrame from "@/components/dashboard/video/WebcamFrame";
 
 interface WelcomePageProps {}
 
@@ -98,25 +100,6 @@ export default function WelcomePage({}: WelcomePageProps) {
             setShowDialog={setShowDialog}
           />
         )}
-
-        <GradientButton
-          onClick={() => {
-            setIsRecording(!isRecording);
-          }}
-        >
-          <div
-            style={{
-              flexDirection: "row",
-              gap: 10,
-              display: "flex",
-              alignItems: "center",
-              background: "transparent",
-            }}
-          >
-            {isRecording ? <PlayArrowIcon /> : <PauseIcon />}
-            {isRecording ? "Stop Recording" : "Start Recording"}
-          </div>
-        </GradientButton>
       </header>
 
       {/* 메인 컨텐츠 */}
@@ -130,24 +113,7 @@ export default function WelcomePage({}: WelcomePageProps) {
         }}
       >
         {/* 둥근 모서리 프레임 */}
-        <div
-          style={{
-            backgroundColor: "#FFFFFF",
-            borderRadius: "25px",
-            width: "90%", // 프레임 너비,
-            marginTop: "30px",
-            minWidth: "800px",
-            maxWidth: "1000px",
-            height: "500px",
-            marginLeft: "20px",
-            marginRight: "20px",
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-            textAlign: "center",
-          }}
-        >
-          <BlinkAverageChart />
-        </div>
-        <BlinkChart />
+        <WebcamFrame/>
       </main>
     </>
   );

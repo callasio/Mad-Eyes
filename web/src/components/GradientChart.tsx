@@ -1,20 +1,17 @@
-import * as React from "react";
-import { ScaleLinear } from "d3-scale";
-import { green, red } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
-import { useYScale, useDrawingArea } from "@mui/x-charts/hooks";
+import { useDrawingArea } from "@mui/x-charts/hooks";
 import { LineChart, areaElementClasses } from "@mui/x-charts/LineChart";
 
 interface GradientChartProps {
   xAxis: { data: number[] }[];
   data: number[];
-  color: string;
+  colors: string[];
 }
 
 export default function GradientChart({
   xAxis,
   data,
-  color,
+  colors,
 }: GradientChartProps) {
   return (
     <Stack direction="column" width="100%" spacing={1}>
@@ -27,26 +24,25 @@ export default function GradientChart({
           },
         ]}
         series={[{ data, showMark: false, area: true }]}
-        height={200}
-        margin={{ top: 20, bottom: 30, left: 75 }}
+        height={300}
         tooltip={{ trigger: "none" }}
         disableAxisListener
         disableLineItemHighlight
         axisHighlight={{ x: "none", y: "none" }}
-        colors={[color]}
+        colors={colors}
         sx={{
           [`& .${areaElementClasses.root}`]: {
             fill: "url(#paint0_linear_45_2)",
           },
         }}
       >
-        <ColorPalette id="paint0_linear_45_2" color={color} />
+        <ColorPalette id="paint0_linear_45_2" colors={colors} />
       </LineChart>
     </Stack>
   );
 }
 
-function ColorPalette({ id, color }: { id: string; color: string }) {
+function ColorPalette({ id, colors }: { id: string; colors: string[] }) {
   const { top, height, bottom } = useDrawingArea();
   const svgHeight = top + bottom + height; // You can provide the axis Id if you have multiple ones
 
@@ -60,8 +56,8 @@ function ColorPalette({ id, color }: { id: string; color: string }) {
         y2={`${svgHeight}px`}
         gradientUnits="userSpaceOnUse" // Use the SVG coordinate instead of the component ones.
       >
-        <stop stopColor={color} stopOpacity="0.8" />
-        <stop offset="1" stopColor={color} stopOpacity="0" />
+        <stop stopColor={colors[0]} />
+        <stop offset="1" stopColor={colors[1]}/>
       </linearGradient>
     </defs>
   );

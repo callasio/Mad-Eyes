@@ -3,7 +3,7 @@
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
-import { RecordingProvider } from "@/video/process";
+import { RecordingProvider } from "@/video/RecordingProvider";
 import { AuthProvider } from "@/auth/AuthProvider";
 
 const geistSans = Geist({

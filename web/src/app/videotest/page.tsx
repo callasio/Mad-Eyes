@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRecording } from "../../video/process";
+import { useRecording } from "../../video/RecordingProvider";
 
 export default function Page() {
   const { isRecording, setIsRecording } = useRecording();
