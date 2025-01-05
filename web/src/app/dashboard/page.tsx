@@ -3,15 +3,10 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import BlinkAverageChart from "@/components/blinkAverageChart";
 import { useAuth } from "@/auth/AuthProvider";
 import GradientButton from "@/components/GradientButton";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
 import DashboardDialog from "@/components/dashboard/dialog/dialog";
 import { useRecording } from "@/video/RecordingProvider";
-import BlinkChart from "@/components/dashboard/video/BlinkChart";
-import { themeColor } from "@/constants/colors";
 import WebcamFrame from "@/components/dashboard/video/WebcamFrame";
 
 interface WelcomePageProps {}
@@ -92,6 +87,11 @@ export default function WelcomePage({}: WelcomePageProps) {
         >
           Welcome Back, {user?.nickname}
         </h1>
+        <GradientButton onClick={() => {
+          router.push("/profile/" + user?.id);
+        }}>
+          Profile
+        </GradientButton>
         {/* User Profile Dialog */}
         {showDialog && (
           <DashboardDialog
