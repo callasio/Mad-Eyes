@@ -1,5 +1,5 @@
 import { Session } from "next-auth";
-import { getUrl } from "../constants/url";
+import { getUrl } from "../utils/url";
 
 interface PostUserRegisterResponse {
   status: "existing" | "success" | "error";

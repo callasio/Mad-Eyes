@@ -7,13 +7,15 @@ import { useState, useTransition } from "react";
 
 export default function Home() {
   const { loading } = useAuth();
-  const [isPending, _] = useTransition();
 
   return (
     <>
-      <Header />
-      {loading || isPending ? <div>Loading...</div> :
-        <MainContent />}
+      {loading? <div>Loading...</div> :
+
+        <>
+          <Header />
+          <MainContent />
+        </>}
     </>
   );
 }

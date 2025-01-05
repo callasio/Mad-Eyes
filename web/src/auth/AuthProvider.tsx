@@ -21,6 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isSignedUp, setIsSignedUp] = useState<boolean>(false);
   const [user, setUser] = useState<UserData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingUser, setLoadingUser] = useState<boolean>(true);
   const [isPending, startTransition] = useTransition();
 
   function navigateTo(path: string) {
@@ -31,22 +32,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (status === 'loading') {
-      setLoading(true);
+      setLoadingUser(true);
     } else if (status === 'authenticated') {
-      checkSignupState();
-      setLoading(false);
+      checkSignupState().then(() => setLoadingUser(false));
     } else if (status === 'unauthenticated') {
       navigateTo('/');
-      setLoading(false);
+      setLoadingUser(false);
     }
   }, [status]);
 
   useEffect(() => {
-    setLoading(isPending || loading);
-  }, [isPending]);
+    setLoading(isPending || loadingUser);
+  }, [isPending, loadingUser]);
 
   const checkSignupState = async () => {
-    setLoading(true);
+    setLoadingUser(true);
     if (session?.idToken) {
       const userResponse = await getUser(session);
       if (userResponse.success) {
@@ -61,7 +61,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       } else {
         signOut();
-        setLoading(false);
       }
     }
   };

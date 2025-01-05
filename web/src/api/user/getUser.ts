@@ -1,13 +1,15 @@
 import { Session } from "next-auth";
-import { getUrl } from "../constants/url";
+import { getUrl } from "../utils/url";
+import { pictureUrlFromString } from "../utils/picture";
 
 export interface UserData {
+  id: string;
   email: string;
   nickname: string;
   profilePicture?: string;
 }
 
-interface GetUserResponse {
+export interface GetUserResponse {
   success: boolean;
   user?: UserData;
 }
@@ -23,27 +25,15 @@ export async function getUser(session: Session): Promise<GetUserResponse> {
   if (res.status !== 200) return { success: false };
   const data = await res.json();
 
-  const profilePictureString = data.profilePicture;
-  let url = undefined;
-
-  if (profilePictureString) {
-    const byteCharacters = atob(profilePictureString);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray]);
-    url = URL.createObjectURL(blob);
-  }
-
   if (data.registered)
     return { 
       success: true,
         user: {
-        email: data.email,
-        nickname: data.nickname,
-        profilePicture: url,
+          id: data.id,
+          email: data.email,
+          nickname: data.nickname,
+          profilePicture: data.profilePicture ?
+            pictureUrlFromString(data.profilePicture) : undefined,
       }};
   
   return { success: true };

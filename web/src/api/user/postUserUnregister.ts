@@ -1,5 +1,5 @@
 import { Session } from "next-auth";
-import { getUrl } from "../constants/url";
+import { getUrl } from "../utils/url";
 
 interface PostUserUnregisterResponse {
   status: "nonexistent" | "success" | "error";
