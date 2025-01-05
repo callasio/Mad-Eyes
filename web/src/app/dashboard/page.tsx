@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import BlinkAverageChart from "@/components/blinkAverageChart";
 import { useAuth } from "@/auth/AuthProvider";
 import GradientButton from "@/components/GradientButton";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 import DashboardDialog from "@/components/dashboard/dialog/dialog";
 import { useRecording } from "@/video/process";
 import BlinkChart from "@/components/dashboard/graph/BlinkChart";
@@ -95,19 +95,24 @@ export default function WelcomePage({}: WelcomePageProps) {
           <DashboardDialog
             user={user!}
             friends={mockFriends}
-            setShowDialog={setShowDialog}/>
+            setShowDialog={setShowDialog}
+          />
         )}
 
         <GradientButton
-          onClick={()=> {setIsRecording(!isRecording)}}
+          onClick={() => {
+            setIsRecording(!isRecording);
+          }}
         >
-          <div style={{
-            flexDirection: "row",
-            gap: 10,
-            display: "flex",
-            alignItems: "center",
-            background: "transparent"
-          }}>
+          <div
+            style={{
+              flexDirection: "row",
+              gap: 10,
+              display: "flex",
+              alignItems: "center",
+              background: "transparent",
+            }}
+          >
             {isRecording ? <PlayArrowIcon /> : <PauseIcon />}
             {isRecording ? "Stop Recording" : "Start Recording"}
           </div>

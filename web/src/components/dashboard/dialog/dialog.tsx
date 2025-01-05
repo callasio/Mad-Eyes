@@ -1,9 +1,9 @@
-import SignOutButton from '@/constants/signOutButton';
-import React, { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import FriendsFrame from './friends';
-import { Friend } from '@/app/dashboard/page';
-import SelectedFriendFrame from './selectedFriend';
+import SignOutButton from "@/constants/signOutButton";
+import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import FriendsFrame from "./friends";
+import { Friend } from "@/app/dashboard/page";
+import SelectedFriendFrame from "./selectedFriend";
 
 interface User {
   profilePicture?: string;
@@ -17,7 +17,11 @@ interface DialogProps {
   setShowDialog: (show: boolean) => void;
 }
 
-const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }) => {
+const DashboardDialog: React.FC<DialogProps> = ({
+  user,
+  friends,
+  setShowDialog,
+}) => {
   const [showFriends, setShowFriends] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
 
@@ -29,7 +33,7 @@ const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }
   };
 
   const getSessionDuration = (session: { start: Date; end?: Date }) => {
-    if (!session.end) return 'Ongoing';
+    if (!session.end) return "Ongoing";
     const duration = session.end.getTime() - session.start.getTime();
     const minutes = Math.floor(duration / 6000);
     return `${minutes} minutes`;
@@ -38,47 +42,47 @@ const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }
   return (
     <div
       style={{
-        position: 'absolute',
-        top: '70px',
-        left: '20px',
-        backgroundColor: '#2D2D2D',
-        borderRadius: '12px',
-        padding: '20px',
-        width: '300px',
-        color: 'white',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+        position: "absolute",
+        top: "70px",
+        left: "20px",
+        backgroundColor: "#2D2D2D",
+        borderRadius: "12px",
+        padding: "20px",
+        width: "300px",
+        color: "white",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
         zIndex: 1000,
       }}
     >
       <button
         onClick={() => setShowDialog(false)}
         style={{
-          position: 'absolute',
-          right: '10px',
-          top: '10px',
-          background: 'none',
-          border: 'none',
-          color: 'white',
-          fontSize: '18px',
-          cursor: 'pointer',
+          position: "absolute",
+          right: "10px",
+          top: "10px",
+          background: "none",
+          border: "none",
+          color: "white",
+          fontSize: "18px",
+          cursor: "pointer",
         }}
       >
-        <CloseIcon/>
+        <CloseIcon />
       </button>
 
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <div
           style={{
-            width: '110px',
-            height: '110px',
-            margin: '0 auto 10px',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            border: '2px solid #ddd',
-            backgroundColor: '#302C42',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: "110px",
+            height: "110px",
+            margin: "0 auto 10px",
+            borderRadius: "50%",
+            overflow: "hidden",
+            border: "2px solid #ddd",
+            backgroundColor: "#302C42",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           {user?.profilePicture ? (
@@ -86,21 +90,21 @@ const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }
               src={user?.profilePicture}
               alt="Profile"
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
               }}
             />
           ) : (
             <div
               style={{
-                width: '100%',
-                height: '100%',
-                backgroundColor: '#666',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px',
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#666",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "24px",
               }}
             >
               {user?.nickname}
@@ -109,18 +113,18 @@ const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }
         </div>
         <div
           style={{
-            fontSize: '18px',
-            fontWeight: 'bold',
-            marginBottom: '5px',
-            color: 'white',
+            fontSize: "18px",
+            fontWeight: "bold",
+            marginBottom: "5px",
+            color: "white",
           }}
         >
           {user?.nickname}
         </div>
         <div
           style={{
-            fontSize: '14px',
-            color: '#ccc',
+            fontSize: "14px",
+            color: "#ccc",
           }}
         >
           {user?.email}
@@ -130,20 +134,20 @@ const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }
       <button
         onClick={() => setShowFriends(!showFriends)}
         style={{
-          width: '100%',
-          padding: '8px',
-          backgroundColor: '#8176AF',
-          border: 'none',
-          borderRadius: '20px',
-          color: 'white',
-          cursor: 'pointer',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          marginTop: '10px',
-          marginBottom: '10px',
+          width: "100%",
+          padding: "8px",
+          backgroundColor: "#8176AF",
+          border: "none",
+          borderRadius: "20px",
+          color: "white",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: "bold",
+          marginTop: "10px",
+          marginBottom: "10px",
         }}
       >
-        {showFriends ? 'Hide Friends' : 'Show Friends'}
+        {showFriends ? "Hide Friends" : "Show Friends"}
       </button>
 
       {showFriends && (
@@ -151,7 +155,7 @@ const DashboardDialog: React.FC<DialogProps> = ({ user, friends, setShowDialog }
       )}
 
       {selectedFriend && (
-        <SelectedFriendFrame 
+        <SelectedFriendFrame
           selectedFriend={selectedFriend}
           setSelectedFriend={setSelectedFriend}
         />

@@ -1,11 +1,9 @@
-import { signOut } from 'next-auth/react';
-import React from 'react';
+import { signOut } from "next-auth/react";
+import React from "react";
 
 const SignOutButton: React.FC<{
   rounded?: boolean;
-}> = ({
-  rounded = true,
-}) => {
+}> = ({ rounded = true }) => {
   return (
     <button
       onClick={() => signOut()}

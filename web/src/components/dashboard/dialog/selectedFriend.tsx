@@ -1,6 +1,6 @@
-import React from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { Friend } from '@/app/dashboard/page';
+import React from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { Friend } from "@/app/dashboard/page";
 
 interface SelectedFriendFrameProps {
   selectedFriend: Friend | null;
@@ -20,7 +20,6 @@ const getElapsedTime = (startTime: Date): string => {
   }
 };
 
-
 const getSessionDuration = (session: { start: Date; end?: Date }): string => {
   const startTime = new Date(session.start);
   const endTime = session.end ? new Date(session.end) : new Date();
@@ -36,67 +35,69 @@ const getSessionDuration = (session: { start: Date; end?: Date }): string => {
   }
 };
 
-
-const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({ selectedFriend, setSelectedFriend }) => {
+const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({
+  selectedFriend,
+  setSelectedFriend,
+}) => {
   if (!selectedFriend) return null;
 
   return (
     <div
       style={{
-        position: 'absolute',
-        left: '320px',
-        top: '0',
-        backgroundColor: '#2D2D2D',
-        borderRadius: '12px',
-        padding: '20px',
-        width: '300px',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+        position: "absolute",
+        left: "320px",
+        top: "0",
+        backgroundColor: "#2D2D2D",
+        borderRadius: "12px",
+        padding: "20px",
+        width: "300px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
       }}
     >
       <button
         onClick={() => setSelectedFriend(null)}
         style={{
-          position: 'absolute',
-          right: '10px',
-          top: '10px',
-          background: 'none',
-          border: 'none',
-          color: 'white',
-          fontSize: '18px',
-          cursor: 'pointer',
+          position: "absolute",
+          right: "10px",
+          top: "10px",
+          background: "none",
+          border: "none",
+          color: "white",
+          fontSize: "18px",
+          cursor: "pointer",
         }}
       >
         <CloseIcon />
       </button>
-      <h3 style={{ marginBottom: '15px', color: 'white' }}>
+      <h3 style={{ marginBottom: "15px", color: "white" }}>
         {selectedFriend.nickname}'s Session
       </h3>
       <div
         style={{
-          backgroundColor: '#383838',
-          borderRadius: '8px',
-          padding: '20px',
-          color: 'white',
-          textAlign: 'center',
+          backgroundColor: "#383838",
+          borderRadius: "8px",
+          padding: "20px",
+          color: "white",
+          textAlign: "center",
         }}
       >
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: '15px',
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "15px",
           }}
         >
           <div
             style={{
-              width: '10px',
-              height: '10px',
-              borderRadius: '50%',
-              backgroundColor: selectedFriend.isOnline ? '#4CAF50' : '#666',
-              marginRight: '10px',
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: selectedFriend.isOnline ? "#4CAF50" : "#666",
+              marginRight: "10px",
             }}
           />
-          <span>{selectedFriend.isOnline ? 'Online' : 'Offline'}</span>
+          <span>{selectedFriend.isOnline ? "Online" : "Offline"}</span>
         </div>
 
         {selectedFriend.lastSession && (
@@ -104,23 +105,23 @@ const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({ selectedFrien
             {selectedFriend.isOnline ? (
               <>
                 <div>Started:</div>
-                <div style={{ fontSize: '18px', marginBottom: '10px' }}>
+                <div style={{ fontSize: "18px", marginBottom: "10px" }}>
                   {selectedFriend.lastSession.start.toLocaleTimeString()}
                 </div>
                 <div>Duration:</div>
-                <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>
                   {getElapsedTime(selectedFriend.lastSession.start)}
                 </div>
               </>
             ) : (
               <>
                 <div>Last Session:</div>
-                <div style={{ fontSize: '16px', marginBottom: '10px' }}>
-                  {selectedFriend.lastSession.start.toLocaleTimeString()} -{' '}
+                <div style={{ fontSize: "16px", marginBottom: "10px" }}>
+                  {selectedFriend.lastSession.start.toLocaleTimeString()} -{" "}
                   {selectedFriend.lastSession.end?.toLocaleTimeString()}
                 </div>
                 <div>Duration:</div>
-                <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>
                   {getSessionDuration(selectedFriend.lastSession)}
                 </div>
               </>
