@@ -5,9 +5,11 @@ interface GradientButtonProps {
   onClick: () => void;
 }
 
-const GradientButton: React.FC<GradientButtonProps> = ({
+const GradientButton: React.FC<GradientButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   onClick,
   children,
+  style,
+  ...rest
 }) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   return (
@@ -25,6 +27,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
         fontWeight: "bold",
         transition: "background 0.3s ease",
         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+        ...style,
       }}
       onClick={onClick}
       onMouseEnter={(e) => {
@@ -37,6 +40,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
           ref.current.style.background =
             "linear-gradient(to right, #8176AF, #C0B7E8)";
       }}
+      {...rest}
     >
       {children}
     </button>

@@ -49,7 +49,7 @@ const VideoFrame: React.FC = () => {
           border: "3px solid #262335",
         }}
       >
-        {!isRecording && (
+        {!isWebcamOn && (
           <div
             style={{
               position: "absolute",
@@ -102,25 +102,39 @@ const VideoFrame: React.FC = () => {
           autoPlay
           playsInline
           muted
-        />        
-        <GradientButton
-          onClick={() => {
-            setIsRecording(!isRecording);
-          }}
-        >
-          <div
+        />
+        <div style={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+        }}>
+          <GradientButton
             style={{
-              flexDirection: "row",
-              gap: 10,
+              width: "100%",
+              flex: 1,
               display: "flex",
+              justifyContent: "center",
               alignItems: "center",
-              background: "transparent",
+            }}
+            onClick={() => {
+              setIsRecording(!isRecording);
             }}
           >
-            {isRecording ? <PlayArrowIcon /> : <PauseIcon />}
-            {isRecording ? "Stop Recording" : "Start Recording"}
-          </div>
-        </GradientButton>
+            <div
+              style={{
+                flexDirection: "row",
+                gap: 10,
+                display: "flex",
+                alignItems: "center",
+                background: "transparent",
+              }}
+            >
+              {isRecording ? <PlayArrowIcon /> : <PauseIcon />}
+              {isRecording ? "Stop Recording" : "Start Recording"}
+            </div>
+          </GradientButton>
+        </div>
       </div>
     </div>
   );
