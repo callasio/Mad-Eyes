@@ -4,6 +4,7 @@ import MainContent from "@/components/mainContents";
 import Header from "@/components/Header";
 import { useAuth } from "@/auth/AuthProvider";
 import { useState, useTransition } from "react";
+import LoadingEyeProgress from '@/components/LoadingEyeProgress';  // Add this import
 
 export default function Home() {
   const { loading } = useAuth();
@@ -11,7 +12,7 @@ export default function Home() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <LoadingEyeProgress />  
       ) : (
         <>
           <Header />

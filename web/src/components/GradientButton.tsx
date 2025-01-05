@@ -18,7 +18,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
         background: "linear-gradient(to right, #8176AF, #C0B7E8)",
         color: "#302C42",
         border: "none",
-        borderRadius: "8px",
+        borderRadius: "50px",
         cursor: "pointer",
         fontSize: "17px",
         fontFamily: "var(--font-montserrat), sans-serif",
