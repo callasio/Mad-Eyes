@@ -3,6 +3,7 @@
 "use client";
 
 import { postUserRegister } from "@/api/user/postUserRegister";
+import { useAuth } from "@/auth/AuthProvider";
 import GradientButton from "@/components/signup/GradientButton";
 import GradientFill from "@/components/signup/GradientFill";
 import Separator from "@/components/signup/Separator";
@@ -10,13 +11,16 @@ import Header2 from "@/components/typography/Header2";
 import { themeColor } from "@/constants/colors";
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SignupPage() {
   const [nickname, setNickname] = useState("");
   const [agree, setAgree] = useState(false);
   const [profileImage, setProfileImage] = useState("");
+  
+  const { checkSignupState: updateSignupState } = useAuth();
 
   const { data: session } = useSession();
 
@@ -191,7 +195,10 @@ export default function SignupPage() {
               session,
             )
 
-            alert(res.status);
+            if (res.status === "existing" || res.status === "success") {
+              updateSignupState();
+              return;
+            }
           }} />
         </div>
       </GradientFill>

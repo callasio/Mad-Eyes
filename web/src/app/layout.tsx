@@ -4,6 +4,7 @@ import { Geist, Geist_Mono,Montserrat } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import { RecordingProvider } from "@/video/process";
+import { AuthProvider } from "@/auth/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable}`}>
         <RecordingProvider>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <AuthProvider>
+            {children}
+            </AuthProvider>
+          </SessionProvider>
         </RecordingProvider>
       </body>
     </html>

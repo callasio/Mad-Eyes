@@ -6,12 +6,16 @@ interface PostUserRegisterResponse {
 }
 
 export async function postUserRegister(nickname: string, profilePicture: Blob | null, session: Session): Promise<PostUserRegisterResponse> {
+  const formData = new FormData();
+  formData.append('nickname', nickname);
+  if (profilePicture) formData.append('profilePicture', profilePicture);
+
   const res = await fetch(getUrl('user', 'register'), {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${session?.idToken}`,
     },
-    body: JSON.stringify({ nickname, profilePicture }),
+    body: formData,
   });
 
   if (res.status !== 200) return { status: "error" };
