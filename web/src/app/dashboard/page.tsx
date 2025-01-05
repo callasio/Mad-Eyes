@@ -64,7 +64,6 @@ export default function WelcomePage({  }: WelcomePageProps) {
 
   const { user } = useAuth();
 
-
   useEffect(() => {
     if (!session) {
         router.push('/')
