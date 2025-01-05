@@ -38,11 +38,17 @@ CREATE TABLE IF NOT EXISTS friend_invites (
   friend_id TEXT NOT NULL,
   PRIMARY KEY (id, friend_id),
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (friend_id) REFERENCES users(friend_id) ON DELETE CASCADE
+  FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE
 );
 """,
 """
 CREATE INDEX IF NOT EXISTS friend_invites_idx_id ON friend_invites (friend_id);
+""",
+"""
+CREATE TABLE IF NOT EXISTS activity (
+  id TEXT PRIMARY KEY,
+  last_active TIMESTAMP NOT NULL
+)
 """
 ]
 
