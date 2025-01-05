@@ -4,7 +4,7 @@
 
 import { postUserRegister } from "@/api/user/postUserRegister";
 import { useAuth } from "@/auth/AuthProvider";
-import GradientButton from "@/components/signup/GradientButton";
+import GradientButton from "@/components/GradientButton";
 import GradientFill from "@/components/signup/GradientFill";
 import Separator from "@/components/signup/Separator";
 import Header2 from "@/components/typography/Header2";
@@ -12,7 +12,6 @@ import { themeColor } from "@/constants/colors";
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SignupPage() {
@@ -212,7 +211,6 @@ export default function SignupPage() {
             </label>
           </div>
           <GradientButton
-            text="Let's Go!"
             onClick={async () => {
               const blob = await getProfileImageBlob();
               if (!session) {
@@ -226,7 +224,9 @@ export default function SignupPage() {
                 return;
               }
             }}
-          />
+          >
+            Let's Go!
+          </GradientButton>
         </div>
       </GradientFill>
     </main>

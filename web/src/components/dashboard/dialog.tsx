@@ -3,22 +3,12 @@ import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import FriendsFrame from './friends';
 import SelectedFriendFrame from './selectedFriend';
+import { Friend } from '@/app/dashboard/page';
 
 interface User {
   profilePicture?: string;
   nickname: string;
   email: string;
-}
-
-export interface Friend {
-  id: string;
-  nickname: string;
-  email: string;
-  isOnline: boolean;
-  lastSession?: {
-    start: Date;
-    end?: Date;
-  };
 }
 
 interface DialogProps {

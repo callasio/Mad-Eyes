@@ -1,18 +1,19 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BlinkAverageChart from "@/components/blinkAverageChart";
 import { useAuth } from "@/auth/AuthProvider";
-import GradientButton from "@/components/signup/GradientButton";
-import SignOutButton from "@/constants/signOutButton";
-import { Dialog } from "@mui/material";
+import GradientButton from "@/components/GradientButton";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import DashboardDialog from "@/components/dashboard/dialog";
+import { useRecording } from "@/video/process";
 
 interface WelcomePageProps {}
 
-interface Friend {
+export interface Friend {
   id: string;
   nickname: string;
   email: string;
@@ -46,41 +47,12 @@ const mockFriends: Friend[] = [
   },
 ];
 
-const getElapsedTime = (startTime: Date): string => {
-  const now = new Date();
-  const diffMs = now.getTime() - startTime.getTime();
-  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (diffHrs > 0) {
-    return `${diffHrs}h ${diffMins}m`;
-  } else {
-    return `${diffMins}m`;
-  }
-};
-
-const getSessionDuration = (session: { start: Date; end?: Date }): string => {
-  const startTime = new Date(session.start);
-  const endTime = session.end ? new Date(session.end) : new Date();
-
-  const diffMs = endTime.getTime() - startTime.getTime();
-  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (diffHrs > 0) {
-    return `${diffHrs}h ${diffMins}m`;
-  } else {
-    return `${diffMins}m`;
-  }
-};
-
 export default function WelcomePage({}: WelcomePageProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [showDialog, setShowDialog] = useState(false);
 
-  const [showFriends, setShowFriends] = useState(false);
-  const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
+  const { isRecording, setIsRecording } = useRecording();
 
   const { user } = useAuth();
 
@@ -126,11 +98,19 @@ export default function WelcomePage({}: WelcomePageProps) {
         )}
 
         <GradientButton
-          text={"Start Recording"}
-          onClick={function (): void {
-            console.log("Clicked");
-          }}
-        />
+          onClick={()=> {setIsRecording(!isRecording)}}
+        >
+          <div style={{
+            flexDirection: "row",
+            gap: 10,
+            display: "flex",
+            alignItems: "center",
+            background: "transparent"
+          }}>
+            {isRecording ? <PlayArrowIcon /> : <PauseIcon />}
+            {isRecording ? "Stop Recording" : "Start Recording"}
+          </div>
+        </GradientButton>
       </header>
 
       {/* 메인 컨텐츠 */}

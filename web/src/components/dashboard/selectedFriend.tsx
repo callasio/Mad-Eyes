@@ -1,25 +1,41 @@
 import React from 'react';
-import { Friend } from './dialog';
 import CloseIcon from '@mui/icons-material/Close';
+import { Friend } from '@/app/dashboard/page';
 
 interface SelectedFriendFrameProps {
   selectedFriend: Friend | null;
   setSelectedFriend: (friend: Friend | null) => void;
 }
 
-const getElapsedTime = (start: Date) => {
+const getElapsedTime = (startTime: Date): string => {
   const now = new Date();
-  const elapsed = now.getTime() - start.getTime();
-  const minutes = Math.floor(elapsed / 6000);
-  return `${minutes} minutes`;
+  const diffMs = now.getTime() - startTime.getTime();
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffHrs > 0) {
+    return `${diffHrs}h ${diffMins}m`;
+  } else {
+    return `${diffMins}m`;
+  }
 };
 
-const getSessionDuration = (session: { start: Date; end?: Date }) => {
-  if (!session.end) return 'Ongoing';
-  const duration = session.end.getTime() - session.start.getTime();
-  const minutes = Math.floor(duration / 6000);
-  return `${minutes} minutes`;
+
+const getSessionDuration = (session: { start: Date; end?: Date }): string => {
+  const startTime = new Date(session.start);
+  const endTime = session.end ? new Date(session.end) : new Date();
+
+  const diffMs = endTime.getTime() - startTime.getTime();
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffHrs > 0) {
+    return `${diffHrs}h ${diffMins}m`;
+  } else {
+    return `${diffMins}m`;
+  }
 };
+
 
 const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({ selectedFriend, setSelectedFriend }) => {
   if (!selectedFriend) return null;
