@@ -4,9 +4,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { themeColor } from '@/constants/colors';
 
 const ImageForm: React.FC<{
+  imagePlaceholderText?: string;
   profileImage: string;
   setProfileImage?: (image: string) => void;
 }> = ({
+  imagePlaceholderText = "",
   profileImage,
   setProfileImage,
 }) => {
@@ -44,13 +46,16 @@ const ImageForm: React.FC<{
           {profileImage ? (
             <img
               src={profileImage}
-              alt="Profile"
               style={{
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
               }}
             />
+          ) : imagePlaceholderText ? (
+            <span style={{ color: themeColor.white, fontSize: '40px' }}>
+              {imagePlaceholderText[0].toUpperCase()}
+            </span> 
           ) : (
             <AddIcon style={{ color: themeColor.white, fontSize: '40px' }} />
           )}

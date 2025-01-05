@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import { RecordingProvider } from "@/video/RecordingProvider";
 import { AuthProvider } from "@/auth/AuthProvider";
+import ToDashboard from "@/components/ToDashboard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,10 @@ export default function RootLayout({
       >
         <RecordingProvider>
           <SessionProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              {children}
+              <ToDashboard />
+            </AuthProvider>
           </SessionProvider>
         </RecordingProvider>
       </body>

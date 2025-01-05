@@ -18,12 +18,11 @@ import { useSession } from "next-auth/react";
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const { data: session } = useSession();
 
-  const { user, checkSignupState } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!user) {
@@ -33,10 +32,6 @@ const ProfilePage: React.FC = () => {
       setProfileImage(user.profilePicture ?? "");
     }
   }, [user]);
-
-  if (loading) {
-    return <LoadingEyeProgress />;
-  }
 
   if (!user) {
     router.push("/");
@@ -76,8 +71,7 @@ const ProfilePage: React.FC = () => {
           <div style={{flex: 1}}/>
           <GradientButton onClick={async () => {
             session &&
-              updateUser(userName, profileImage, session).then(async () => {
-                await checkSignupState();
+              updateUser(userName, profileImage, session).then(() => {
                 router.push("/profile/" + user.id);
               })
           }}>

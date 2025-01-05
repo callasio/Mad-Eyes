@@ -43,7 +43,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
       });
   }, [params]);
 
-  if (loading) {
+  if (loading || !userData) {
     return <LoadingEyeProgress />;
   }
 
@@ -60,7 +60,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
       }}
     >
       <GradientFill>
-        <Header2 text={`${userData?.nickname}'s profile`} />
+        <Header2 text={`${userData.nickname}'s profile`} />
         <Separator />
         <div
           style={{
@@ -71,7 +71,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
             alignItems: "center",
           }}
         >
-          <ImageForm profileImage={userData?.profilePicture || ""} />
+          <ImageForm profileImage={userData.profilePicture || ""} imagePlaceholderText={userData.nickname} />
           {user?.id === id && (
             <GradientButton onClick={() => router.push("/profile/edit")}>
               <div>Edit Profile</div>
