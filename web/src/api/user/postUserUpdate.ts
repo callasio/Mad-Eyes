@@ -5,7 +5,7 @@ interface PostUserUpdateResponse {
   status: "success" | "nonexistent" | "error";
 }
 
-export async function updateUser(
+export async function postUserUpdate(
   nickname: string,
   profilePicture: string,
   session: Session,

@@ -13,7 +13,7 @@ import { UserData } from "@/api/user/getUser";
 import ImageForm from "@/components/signup/ImageForm";
 import GradientButton from "@/components/GradientButton";
 import NicknameForm from "@/components/signup/NicknameForm";
-import { updateUser } from "@/api/user/updateUser";
+import { postUserUpdate } from "@/api/user/postUserUpdate";
 import { useSession } from "next-auth/react";
 
 const ProfilePage: React.FC = () => {
@@ -22,7 +22,7 @@ const ProfilePage: React.FC = () => {
   const [userName, setUserName] = useState<string>("");
   const { data: session } = useSession();
 
-  const { user } = useAuth();
+  const { user, checkSignupState: checkUserAuth } = useAuth();
 
   useEffect(() => {
     if (!user) {
@@ -71,7 +71,8 @@ const ProfilePage: React.FC = () => {
           <div style={{flex: 1}}/>
           <GradientButton onClick={async () => {
             session &&
-              updateUser(userName, profileImage, session).then(() => {
+              postUserUpdate(userName, profileImage, session).then(() => {
+                checkUserAuth();
                 router.push("/profile/" + user.id);
               })
           }}>

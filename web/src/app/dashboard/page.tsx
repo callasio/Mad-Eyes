@@ -10,6 +10,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import { useRecording } from "@/video/RecordingProvider";
 import WebcamFrame from "@/components/dashboard/video/WebcamFrame";
 import DashboardDialog from "@/components/dashboard/dialog/dialog";
+import LoadingEyeProgress from "@/components/LoadingEyeProgress";
 
 interface WelcomePageProps {}
 
@@ -61,6 +62,11 @@ export default function WelcomePage({}: WelcomePageProps) {
     }
   }, [session]);
 
+
+  if (!user) {
+    return <LoadingEyeProgress />;
+  }
+
   return (
     <>
       {/* 헤더 */}
@@ -75,19 +81,48 @@ export default function WelcomePage({}: WelcomePageProps) {
           color: "white",
         }}
       >
-        {/* Welcome Back 문구 */}
-        <h1
+        <div
+          style={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 10, cursor: "pointer" }}
           onClick={() => setShowDialog(!showDialog)}
-          style={{
-            margin: 0,
-            fontSize: "20px",
-            fontWeight: "bold",
-            fontFamily: "var(--font-montserrat), sans-serif",
-            cursor: "pointer", // Added to show it's clickable
-          }}
-        >
-          Welcome Back, {user?.nickname}
-        </h1>
+          >
+          {user?.profilePicture ? (
+            <img
+              src={user?.profilePicture}
+              alt="Profile"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                overflow: "hidden",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#666",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "24px",
+              }}
+            >
+              {user?.nickname}
+            </div>
+          )}
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "20px",
+              fontWeight: "bold",
+              fontFamily: "var(--font-montserrat), sans-serif",
+            }}
+          >
+            {user?.nickname}
+          </h1>
+        </div>
         <GradientButton onClick={() => {
           router.push("/profile/" + user?.id);
         }}>

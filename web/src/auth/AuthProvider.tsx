@@ -11,6 +11,7 @@ import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { getUser, UserData } from "@/api/user/getUser";
 import { setLazyProp } from "next/dist/server/api-utils";
+import path from "path";
 
 interface AuthContextType {
   isSignedUp: boolean;
@@ -26,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
   const [isSignedUp, setIsSignedUp] = useState<boolean>(false);
   const [user, setUser] = useState<UserData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,11 +63,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         if (userResponse.user) {
           setIsSignedUp(true);
           setUser(userResponse.user);
-          navigateTo("/dashboard");
+          if (pathname === "/" || pathname === "/signup") navigateTo("/dashboard");
         } else {
           setIsSignedUp(false);
           setUser(undefined);
-          navigateTo("/signup");
+          if (pathname === "/" || pathname === "/dashboard") navigateTo("/signup");
         }
       } else {
         signOut();
