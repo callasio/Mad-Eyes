@@ -1,5 +1,5 @@
+import { Friend } from '@/app/dashboard/page';
 import React from 'react';
-import { Friend } from './dialog';
 
 interface FriendsProps {
   friends: Friend[];

@@ -2,8 +2,8 @@ import SignOutButton from '@/constants/signOutButton';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import FriendsFrame from './friends';
-import SelectedFriendFrame from './selectedFriend';
 import { Friend } from '@/app/dashboard/page';
+import SelectedFriendFrame from './selectedFriend';
 
 interface User {
   profilePicture?: string;

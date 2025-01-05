@@ -8,8 +8,9 @@ import { useAuth } from "@/auth/AuthProvider";
 import GradientButton from "@/components/GradientButton";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import DashboardDialog from "@/components/dashboard/dialog";
+import DashboardDialog from "@/components/dashboard/dialog/dialog";
 import { useRecording } from "@/video/process";
+import BlinkChart from "@/components/dashboard/graph/BlinkChart";
 
 interface WelcomePageProps {}
 
@@ -141,6 +142,7 @@ export default function WelcomePage({}: WelcomePageProps) {
         >
           <BlinkAverageChart />
         </div>
+        <BlinkChart />
       </main>
     </>
   );
