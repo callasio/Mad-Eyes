@@ -34,8 +34,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
     } else if (status === 'authenticated') {
       checkSignupState();
+      setLoading(false);
     } else if (status === 'unauthenticated') {
-      router.push('/');
+      navigateTo('/');
+      setLoading(false);
     }
   }, [status]);
 
