@@ -4,7 +4,7 @@ interface Header2Props {
   text: string;
 }
 
-const Header2: React.FC<Header2Props> = ({ text }) => {
+const Header2: React.FC<Header2Props & React.HTMLAttributes<HTMLHeadingElement>> = ({ text, style, ...props }) => {
   return (
     <h2
       style={{
@@ -14,7 +14,9 @@ const Header2: React.FC<Header2Props> = ({ text }) => {
         fontFamily: "var(--font-montserrat), sans-serif",
         marginTop: "35px",
         marginBottom: "17px",
+        ...style,
       }}
+      {...props}
     >
       {text}
     </h2>

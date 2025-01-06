@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import { RecordingProvider } from "@/video/RecordingProvider";
 import { AuthProvider } from "@/auth/AuthProvider";
-import ToDashboard from "@/components/ToDashboard";
+import FloatingButtons from "@/components/FloatingButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,12 +31,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable}`}
+        style={{
+          backgroundColor: "#302C42",
+        }}
       >
         <SessionProvider>
           <RecordingProvider>
             <AuthProvider>
               {children}
-              <ToDashboard />
+              <FloatingButtons />
             </AuthProvider>
           </RecordingProvider>
         </SessionProvider>

@@ -27,8 +27,6 @@ const VideoFrame: React.FC = () => {
   return (
     <div style={{
       display: "flex",
-      width: "90%", // 프레임 너비,
-      maxWidth: "1200px",
       flexDirection: "row",
       margin: "40px",
       gap: "40px"
@@ -130,7 +128,7 @@ const VideoFrame: React.FC = () => {
                 background: "transparent",
               }}
             >
-              {isRecording ? <PlayArrowIcon /> : <PauseIcon />}
+              {isRecording ?  <PauseIcon /> : <PlayArrowIcon /> }
               {isRecording ? "Stop Recording" : "Start Recording"}
             </div>
           </GradientButton>
