@@ -17,7 +17,7 @@ interface AuthContextType {
   isSignedUp: boolean;
   user?: UserData;
   loading: boolean;
-  checkSignupState: () => void;
+  checkSignupState: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,11 +63,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         if (userResponse.user) {
           setIsSignedUp(true);
           setUser(userResponse.user);
-          if (pathname === "/" || pathname === "/signup") navigateTo("/dashboard");
+          if (pathname === "/" || pathname === "/signup")
+            navigateTo("/dashboard");
         } else {
           setIsSignedUp(false);
           setUser(undefined);
-          if (pathname === "/" || pathname === "/dashboard") navigateTo("/signup");
+          if (pathname === "/" || pathname === "/dashboard")
+            navigateTo("/signup");
         }
       } else {
         signOut();

@@ -9,6 +9,7 @@ import os
 from dotenv import load_dotenv
 
 from utils.sql_utils import init_db
+import sqlite3
 
 load_dotenv()
 
@@ -26,6 +27,22 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+@app.get("/all")
+def read_all():
+    def read_all():
+        conn = sqlite3.connect('data.db')
+        cursor = conn.cursor()
+        
+        tables = ["users", "user_friends", "blink_event", "friend_invites", "activity"]
+        result = {}
+        
+        for table in tables:
+            cursor.execute(f"SELECT * FROM {table}")
+            result[table] = cursor.fetchall()
+        
+        conn.close()
+        return result
 
 user_init(app)
 user_friend_init(app)

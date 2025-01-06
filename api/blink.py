@@ -1,3 +1,4 @@
+import logging
 from fastapi import Depends, FastAPI
 
 from utils.sql_utils import db_execute

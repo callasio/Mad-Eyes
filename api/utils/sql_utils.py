@@ -42,9 +42,6 @@ CREATE TABLE IF NOT EXISTS friend_invites (
 );
 """,
 """
-CREATE INDEX IF NOT EXISTS friend_invites_idx_id ON friend_invites (friend_id);
-""",
-"""
 CREATE TABLE IF NOT EXISTS activity (
   id TEXT PRIMARY KEY,
   last_active TIMESTAMP NOT NULL,

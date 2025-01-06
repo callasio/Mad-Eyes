@@ -21,8 +21,8 @@ const HistoryFrame: React.FC<{
   const [history, setHistory] = React.useState<any>(null);
   const [recordStartTimes, setRecordStartTimes] = React.useState<string[]>([]);
 
-  const fetchHistory = async (id: string) => {
-    const res = await getBlinkFromUserId(id);
+  const fetchHistory = async () => {
+    const res = await getBlinkFromUserId(user.id);
 
     const startTimes = Object.keys(res);
 
@@ -35,7 +35,7 @@ const HistoryFrame: React.FC<{
   };
 
   useEffect(() => {
-    fetchHistory(user.id);
+    if (!isRecording) fetchHistory();
   }, [isRecording]);
 
   return (
@@ -92,7 +92,7 @@ const HistoryFrame: React.FC<{
         ) : recordStartTimes.length > 0 ? (
           <>
             {recordStartTimes.map((startTime: string, index: number) => (
-              <React.Fragment key={startTime.toString()}>
+              <React.Fragment key={new Date(startTime).getTime()}>
                 <HistoryElement
                   user={user}
                   time={new Date(startTime)}

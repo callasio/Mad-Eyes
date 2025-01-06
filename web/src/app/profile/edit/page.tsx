@@ -67,15 +67,18 @@ const ProfilePage: React.FC = () => {
             profileImage={profileImage}
             setProfileImage={setProfileImage}
           />
-          <NicknameForm nickname={userName} setNickname={setUserName}/>
-          <div style={{flex: 1}}/>
-          <GradientButton onClick={async () => {
-            session &&
-              postUserUpdate(userName, profileImage, session).then(() => {
-                checkUserAuth();
-                router.push("/profile/" + user.id);
-              })
-          }}>
+          <NicknameForm nickname={userName} setNickname={setUserName} />
+          <div style={{ flex: 1 }} />
+          <GradientButton
+            onClick={async () => {
+              session &&
+                postUserUpdate(userName, profileImage, session).then(() => {
+                  checkUserAuth().then(() => {
+                    router.push("/profile/" + user.id);
+                  });
+                });
+            }}
+          >
             Save
           </GradientButton>
         </div>
