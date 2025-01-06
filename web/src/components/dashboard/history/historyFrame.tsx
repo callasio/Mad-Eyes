@@ -35,7 +35,7 @@ const HistoryFrame: React.FC<{
   };
 
   useEffect(() => {
-    if (!isRecording) fetchHistory();
+    fetchHistory();
   }, [isRecording]);
 
   return (
