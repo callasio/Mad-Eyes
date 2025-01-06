@@ -132,6 +132,7 @@ const VideoFrame: React.FC = () => {
               height: "100%",
               borderRadius: "25px",
               objectFit: "cover",
+              transform: "scaleX(-1)",
             }}
             autoPlay
             playsInline

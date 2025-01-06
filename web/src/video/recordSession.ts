@@ -52,14 +52,12 @@ export default class RecordSession {
     const nowBlinked = this.getIsBlinked();
     if (nowBlinked && !this.isBlinked) {
       this.blinkCounts[this.blinkCounts.length - 1] += 1;
-      console.log(`blinked ${this.blinkCounts.at(-1)}`);
     }
     this.isBlinked = nowBlinked;
 
     if (this.successTime > this.serverUploadTimeMinute * 60 * 1000) {
       this.serverUploadTimeMinute += UPDATE_INTERVAL_MIN;
       postBlinks(this.startTimeIso8601, this.elapsedTime / 60 / 1000, this.blinkCounts.at(-1)!, this.session)
-      console.log(`last minute: blinked ${this.blinkCounts.at(-1)} times`);
       this.blinkCounts.push(0);
     }
   }
