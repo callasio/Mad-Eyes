@@ -84,7 +84,7 @@ const HistoryFrame: React.FC = () => {
           >
             <Header2 text="Loading..." />
           </div>
-        ) : history ? (
+        ) : recordStartTimes.length > 0 ? (
           <>
             {recordStartTimes.map((startTime: string, index: number) => (
               <React.Fragment key={startTime.toString()}>
