@@ -28,7 +28,7 @@ def blink_init(app: FastAPI):
   @app.post("/blinks/{record_id}/{minutes}")
   async def add_blink(
     record_id: str,
-    minutes: int,
+    minutes: float,
     count: int,
     token: str=Depends(oauth2_scheme)
   ):

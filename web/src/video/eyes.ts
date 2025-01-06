@@ -23,31 +23,7 @@ const FaceBorderIndex = [
   54, 103, 67, 109, 10,
 ];
 
-let ratioHistory: number[] = [];
-
-export function getIsBlinked(
-  landmarkderResults: FaceLandmarkerResult,
-): boolean {
-  const eyesAreaRatio = getEyesAreaRatio(landmarkderResults);
-  updateRatioHistory(eyesAreaRatio);
-
-  if (ratioHistory.length < HISTORY_SIZE * 0.3) return false;
-
-  const averageRatio =
-    ratioHistory.reduce((a, b) => a + b, 0) / ratioHistory.length;
-
-  return eyesAreaRatio < averageRatio * 0.8;
-}
-
-function updateRatioHistory(ratio: number) {
-  if (isNaN(ratio)) return;
-  ratioHistory.push(ratio);
-  if (ratioHistory.length > HISTORY_SIZE) {
-    ratioHistory.shift();
-  }
-}
-
-function getEyesAreaRatio(landmarkderResults: FaceLandmarkerResult): number {
+export function getEyesAreaRatio(landmarkderResults: FaceLandmarkerResult): number {
   const leftEyeArea = getFacePointsArea(landmarkderResults, LeftEyeIndex);
   const rightEyeArea = getFacePointsArea(landmarkderResults, RightEyeIndex);
   const faceArea = getFacePointsArea(landmarkderResults, FaceBorderIndex);

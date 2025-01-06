@@ -32,14 +32,14 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable}`}
       >
-        <RecordingProvider>
-          <SessionProvider>
+        <SessionProvider>
+          <RecordingProvider>
             <AuthProvider>
               {children}
               <ToDashboard />
             </AuthProvider>
-          </SessionProvider>
-        </RecordingProvider>
+          </RecordingProvider>
+        </SessionProvider>
       </body>
     </html>
   );

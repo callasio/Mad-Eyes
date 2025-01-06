@@ -2,11 +2,13 @@
 
 import React, { createContext, useEffect } from "react";
 import { faceLandmarker, getWebcam, stopWebcam } from "@/video/faceMesh";
-import { getIsBlinked } from "./eyes";
+import RecordSession from "./recordSession";
+import { useSession } from "next-auth/react";
 
 const RecordingContext = createContext<{
   isRecording: boolean;
   isWebcamOn: boolean;
+  recordSession?: RecordSession;
   setIsRecording: (isRecording: boolean) => void;
   setOnBlink: (onBlink: () => void) => void;
   videoRef?: React.RefObject<HTMLVideoElement | null>;
@@ -24,6 +26,9 @@ export const RecordingProvider = ({
 }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
+  const { data: session } = useSession();
+
+  const [recordSession, setRecordSession] = React.useState<undefined | RecordSession>(undefined);
   const [blinkCount, setBlinkCount] = React.useState<number>(0);
   const [isBlinked, setIsBlinked] = React.useState<boolean>(false);
   const [isRecording, setIsRecording] = React.useState<boolean>(false);
@@ -60,12 +65,29 @@ export const RecordingProvider = ({
       const currentTime = videoRef.current?.currentTime ?? 0;
       if (currentTime !== lastVideoTime) {
         const result = faceLandmarkerInstance.detect(videoRef.current!);
-        setIsBlinked(getIsBlinked(result));
+        recordSession?.update(result);
       }
 
       animationFrameId = requestAnimationFrame(() => renderLoop(currentTime));
     }
   };
+
+  useEffect(() => {
+    if (recordSession) {
+      recordSession.onBlink = onBlink;
+    }
+  }, [onBlink])
+
+  useEffect(() => {
+    if (isWebcamOn) {
+      setRecordSession(
+        new RecordSession(
+          new Date().toISOString(),
+          session!,
+          onBlink,
+        ));
+    }
+  }, [isWebcamOn])
 
   useEffect(() => {
     getFaceLandmark();
@@ -80,7 +102,7 @@ export const RecordingProvider = ({
 
   return (
     <RecordingContext.Provider
-      value={{ isRecording, isWebcamOn, setIsRecording, videoRef, setOnBlink }}
+      value={{ isRecording, isWebcamOn, recordSession, setIsRecording, videoRef, setOnBlink }}
     >
       {isRecording && (
         <video
