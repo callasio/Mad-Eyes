@@ -9,6 +9,9 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { themeColor } from "@/constants/colors";
 import { Friend } from "@/app/dashboard/page";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SelectedFriendFrame from "../dialog/selectedFriend";
+
+
 
 interface TabButtonProps {
   name: string;
@@ -50,27 +53,72 @@ interface TabButtonProps {
    const [searchQuery, setSearchQuery] = useState("");   
    const [showFriends, setShowFriends] = useState(false);   
    const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
+   const [position, setPosition] = useState<{top: number, left: number}>({top: 0, left: 0});
+
+
  
-  const [friendsData] = useState([
+   const [friendsData, setFriendsData] = useState<Friend[]>([
     {
-      id: "1",
+      id: "1", 
       nickname: "Sarah",
       email: "sarah@example.com",
-      isOnline: true
+      isOnline: true,
+      lastSession: {
+        start: new Date(Date.now() - 3600000),
+      },
     },
     {
       id: "2",
-      nickname: "Mike",
+      nickname: "Mike", 
       email: "mike@example.com",
-      isOnline: false
+      isOnline: false,
+      lastSession: {
+        start: new Date(Date.now() - 7200000),
+        end: new Date(Date.now() - 3600000),
+      },
     },
     {
       id: "3",
       nickname: "John",
-      email: "john@example.com",
-      isOnline: true
+      email: "john@example.com", 
+      isOnline: true,
+      lastSession: {
+        start: new Date(Date.now() - 1800000),
+      },
     }
-  ]);
+   ]);
+  // Add near your other state declarations
+const [requestsData, setRequestsData] = useState([
+  {
+    id: "1",
+    nickname: "Sarah",
+    email: "sarah@example.com",
+    isOnline: true
+  },
+  {
+    id: "2",
+    nickname: "Mike",
+    email: "mike@example.com",
+    isOnline: false
+  },
+  {
+    id: "3",
+    nickname: "John",
+    email: "john@example.com",
+    isOnline: true
+  }
+]);
+
+// Add these functions to your component
+const handleAcceptRequest = (id: string) => {
+  // Add your accept logic here
+  console.log('Accepted request:', id);
+};
+
+const handleRejectRequest = (id: string) => {
+  // Add your reject logic here
+  console.log('Rejected request:', id);
+};
  
   return (
     <div style={{ flex: 1 }}>
@@ -181,7 +229,14 @@ interface TabButtonProps {
                     {friendsData.map((friend) => (
                       <div
                         key={friend.id}
-                        onClick={() => setSelectedFriend(friend)}
+                        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setPosition({
+                            top: rect.bottom + 100, // 선택한 항목 아래 10px 간격
+                            left: rect.left +10
+                          });
+                          setSelectedFriend(friend);
+                        }}
                         style={{
                           padding: "12px",
                           borderRadius: "8px",
@@ -216,19 +271,142 @@ interface TabButtonProps {
                           </div>
                         </div>
                       </div>
+                      
                     ))}
+                    {/* SelectedFriendFrame 표시 */}
+                  {selectedFriend && (
+                    <SelectedFriendFrame
+                      selectedFriend={selectedFriend}
+                      setSelectedFriend={setSelectedFriend} // 닫기 버튼에서 상태 초기화
+                      position={position}
+                    />
+                  )}
                   </div>
                 </>
               )}
               {activeTab === "add" && (
-                <div style={{ color: "white", padding: "20px", textAlign: "center" }}>
-                  Add new friends content goes here
+            <div style={{ color: "white", padding: "0px", textAlign: "center" }}>
+              <div style={{
+                position: "relative",
+                marginBottom: "15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                <input
+                  type="text"
+                  placeholder="Search friends..."
+                  style={{
+                    width: "100%",
+                    padding: "8px 12px",
+                    backgroundColor: "#302C42", // Adjust to match your theme
+                    border: "none",
+                    borderRadius: "8px",
+                    color: "white",
+                    fontSize: "14px",
+                    outline: "none",
+                  }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <div style={{
+                  position: "absolute",
+                  right: "12px",
+                  zIndex: 1,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#999",
+                }}>
+                  🔍
                 </div>
-              )}
+              </div>
+              
+              {/* Add new friends content goes here */}
+            </div>
+            )}
+
               {activeTab === "requests" && (
-                <div style={{ color: "white", padding: "20px", textAlign: "center" }}>
-                  Friend requests content goes here
-                </div>
+                <div style={{ color: "white", paddingTop: "3px", textAlign: "center" }}>
+                 {requestsData.map((request) => (
+        <div
+          key={request.id}
+          style={{
+            padding: "12px",
+            borderRadius: "8px",
+            backgroundColor: "#4D4766",
+            marginBottom: "10px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            justifyContent: "space-between"  // This will push the buttons to the right
+          }}
+        >
+          <div style={{
+            display: "flex",
+            
+            gap: "10px",
+            flex: 1
+          }}>
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                backgroundColor: "#8E85B3",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+              }}
+            >
+              {request.nickname[0]}
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold", marginBottom: "4px", display: "flex", alignItems: "flex-start" }}>
+                {request.nickname}
+              </div>
+              <div style={{ fontSize: "12px", color: "#aaa" }}>
+                {request.email}
+              </div>
+            </div>
+          </div>
+
+          {/* Accept/Reject Buttons */}
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button
+              onClick={() => handleAcceptRequest(request.id)}
+              style={{
+                padding: "6px 12px",
+                backgroundColor: "#8176AF",
+                border: "none",
+                borderRadius: "6px",
+                color: "white",
+                cursor: "pointer",
+                fontSize: "12px",
+              }}
+            >
+              o
+            </button>
+            <button
+              onClick={() => handleRejectRequest(request.id)}
+              style={{
+                padding: "6px 12px",
+                backgroundColor: "#E86452",
+                border: "none",
+                borderRadius: "6px",
+                color: "white",
+                cursor: "pointer",
+                fontSize: "12px",
+              }}
+            >
+           x
+         </button>
+       </div>
+     </div>
+   ))}
+    
+  </div>
               )}
             </>
           )}
@@ -238,5 +416,4 @@ interface TabButtonProps {
   );
  };
  
-
 export default FriendFrame;

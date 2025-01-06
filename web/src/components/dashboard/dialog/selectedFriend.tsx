@@ -5,6 +5,7 @@ import { Friend } from "@/app/dashboard/page";
 interface SelectedFriendFrameProps {
   selectedFriend: Friend | null;
   setSelectedFriend: (friend: Friend | null) => void;
+  position?: { top: number, left: number };  // Add this
 }
 
 const getElapsedTime = (startTime: Date): string => {
@@ -38,6 +39,7 @@ const getSessionDuration = (session: { start: Date; end?: Date }): string => {
 const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({
   selectedFriend,
   setSelectedFriend,
+  position
 }) => {
   if (!selectedFriend) return null;
 
@@ -45,8 +47,8 @@ const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({
     <div
       style={{
         position: "absolute",
-        right: "315px",
-        top: "0",
+        left: position?.left || "300px",
+        top: position?.top || "200px",
         backgroundColor: "#2D2D2D",
         borderRadius: "12px",
         padding: "20px",
