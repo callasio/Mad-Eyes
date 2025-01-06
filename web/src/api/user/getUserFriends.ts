@@ -1,13 +1,10 @@
 import { pictureUrlFromString } from "../utils/picture";
 import { getUrl } from "../utils/url";
+import { UserData } from "./getUser";
 
 interface GetUserFriendsResponse {
   success: boolean;
-  friends?: {
-    id: string;
-    nickname: string;
-    profilePicture?: string;
-  }[];
+  friends?: UserData[];
 }
 
 export async function getUserFriends(id: string): Promise<GetUserFriendsResponse> {
@@ -22,6 +19,7 @@ export async function getUserFriends(id: string): Promise<GetUserFriendsResponse
     success: true,
     friends: data.map((friend: any) => ({
       id: friend.id,
+      email: friend.email,
       nickname: friend.nickname,
       profilePicture: friend.profilePicture
         ? pictureUrlFromString(friend.profilePicture)

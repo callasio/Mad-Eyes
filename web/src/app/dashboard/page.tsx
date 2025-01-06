@@ -183,6 +183,7 @@ export default function WelcomePage({}: WelcomePageProps) {
           gap: "40px",
           display: "flex",
           flexDirection: "row",
+          paddingBottom: "40px"
         }}>
           <FriendFrame />
           <HistoryFrame />

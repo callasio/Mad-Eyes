@@ -1,5 +1,6 @@
 import Header2 from '@/components/typography/Header2';
 import React, { useRef } from 'react';
+import HistoryIcon from '@mui/icons-material/History';
 
 const HistoryFrame: React.FC = () => {
 
@@ -7,9 +8,23 @@ const HistoryFrame: React.FC = () => {
     <div style={{
       flex: 2,
     }}>
-      <Header2 text="HISTORY" style={{
-        marginTop: "0px" 
-      }}/>
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        marginLeft: "10px",
+        marginBottom: "15px"
+      }}>
+        <HistoryIcon style={{
+          verticalAlign: "middle",
+          marginRight: "8px",
+        }} />
+        <Header2 text="HISTORY" style={{
+          marginTop: "0px", 
+          marginBottom: "0px",
+        }}/>
+      </div>
 
       <div style={{
         backgroundColor: "#262335",
