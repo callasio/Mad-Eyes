@@ -64,12 +64,11 @@ export default function WelcomePage({}: WelcomePageProps) {
     }
   }, [session]);
 
-
   if (!user) {
     return <LoadingEyeProgress />;
   }
 
-  const HEADER_HEIGHT = "65px"
+  const HEADER_HEIGHT = "65px";
 
   return (
     <>
@@ -83,25 +82,25 @@ export default function WelcomePage({}: WelcomePageProps) {
           height: HEADER_HEIGHT,
           display: "flex",
           alignItems: "center",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
           justifyContent: "space-between", // 좌측 Welcome Back과 우측 Sign Out 버튼 배치
           padding: "0 20px",
           color: "white",
         }}
       >
         {/* Profile 버튼을 왼쪽으로 이동 */}
-        <div 
-          style={{ 
-            cursor: "pointer", 
+        <div
+          style={{
+            cursor: "pointer",
             backgroundColor: "#302C42",
-            color: "white",  // 텍스트가 잘 보이도록 색상 추가
-             fontFamily: 'Montserrat, sans-serif',
-             fontWeight: "bold",
-             fontSize: "25px",
-             marginLeft: "8px",
-             marginTop: "10px",
-             marginBottom: "10px",
-          }} 
+            color: "white", // 텍스트가 잘 보이도록 색상 추가
+            fontFamily: "Montserrat, sans-serif",
+            fontWeight: "bold",
+            fontSize: "25px",
+            marginLeft: "8px",
+            marginTop: "10px",
+            marginBottom: "10px",
+          }}
           onClick={() => {
             router.push("/");
           }}
@@ -109,9 +108,17 @@ export default function WelcomePage({}: WelcomePageProps) {
           Mad Eyes
         </div>
         <div
-          style={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 10, cursor: "pointer", marginRight: "17px", marginTop: "7px"}}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: 10,
+            cursor: "pointer",
+            marginRight: "17px",
+            marginTop: "7px",
+          }}
           onClick={() => setShowDialog(!showDialog)}
-          >
+        >
           {user?.profilePicture ? (
             <img
               src={user?.profilePicture}
@@ -150,7 +157,7 @@ export default function WelcomePage({}: WelcomePageProps) {
             {user?.nickname}
           </h1>
         </div>
-        
+
         {/* User Profile Dialog */}
         {showDialog && (
           <DashboardDialog
@@ -177,16 +184,18 @@ export default function WelcomePage({}: WelcomePageProps) {
         }}
       >
         {/* 둥근 모서리 프레임 */}
-        <WebcamFrame/>
-        <div style={{
-          width: "calc(100% - 80px)",
-          gap: "40px",
-          display: "flex",
-          flexDirection: "row",
-          paddingBottom: "40px"
-        }}>
+        <WebcamFrame />
+        <div
+          style={{
+            width: "calc(100% - 80px)",
+            gap: "40px",
+            display: "flex",
+            flexDirection: "row",
+            paddingBottom: "40px",
+          }}
+        >
           <FriendFrame />
-          <HistoryFrame />
+          <HistoryFrame friends={[]} />
         </div>
       </main>
     </>

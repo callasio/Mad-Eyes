@@ -5,8 +5,11 @@ import Header2 from "@/components/typography/Header2";
 import { getBlinkFromUserId } from "@/api/blinks/getBlinkFromUserId";
 import HistoryElement from "./historyElement";
 import { useRecording } from "@/video/RecordingProvider";
+import { UserData } from "next-auth/providers/42-school";
 
-const HistoryFrame: React.FC = () => {
+const HistoryFrame: React.FC<{
+  friends: UserData[];
+}> = ({ friends }) => {
   const { user } = useAuth();
   const { isRecording } = useRecording();
 
@@ -18,8 +21,8 @@ const HistoryFrame: React.FC = () => {
   const [history, setHistory] = React.useState<any>(null);
   const [recordStartTimes, setRecordStartTimes] = React.useState<string[]>([]);
 
-  const fetchHistory = async () => {
-    const res = await getBlinkFromUserId(user.id);
+  const fetchHistory = async (id: string) => {
+    const res = await getBlinkFromUserId(id);
 
     const startTimes = Object.keys(res);
 
@@ -32,7 +35,7 @@ const HistoryFrame: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(user.id);
   }, [isRecording]);
 
   return (
