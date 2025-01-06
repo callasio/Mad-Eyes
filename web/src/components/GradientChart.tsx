@@ -8,11 +8,9 @@ interface GradientChartProps {
   colors: string[];
 }
 
-const GradientChart: React.FC<GradientChartProps> = ({
-  xAxisData,
-  data,
-  colors,
-}) => {
+const GradientChart: React.FC<
+  GradientChartProps & React.HTMLAttributes<HTMLDivElement>
+> = ({ xAxisData, data, colors, style, ...props }) => {
   // Transform data into format recharts expects
   const chartData = xAxisData.map((x, index) => ({
     time: x,
@@ -22,8 +20,8 @@ const GradientChart: React.FC<GradientChartProps> = ({
   const maxValue = Math.max(...data);
 
   return (
-    <div style={{ width: "100%", height: 300 }}>
-      <ResponsiveContainer>
+    <div style={{ width: "100%", height: 300, ...style }} {...props}>
+      <ResponsiveContainer width={"100%"}>
         <AreaChart
           data={chartData}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}

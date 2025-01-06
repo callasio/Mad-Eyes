@@ -4,7 +4,7 @@ import { postBlinks } from "@/api/blinks/postBlinks";
 import { Session } from "next-auth";
 
 const HISTORY_SIZE = 200;
-const UPDATE_INTERVAL_MIN = 0.2;
+export const UPDATE_INTERVAL_MIN = 0.2;
 
 export default class RecordSession {
   private session: Session;

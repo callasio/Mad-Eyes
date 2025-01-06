@@ -35,11 +35,12 @@ const BlinkChart: React.FC = () => {
 
   return (
     <GradientChart
+      style={{ marginLeft: "-25px", marginBottom: "-20px" }}
       xAxisData={isRecording ? xAxisData : backXAxisData}
       data={isRecording ? data : backData}
       colors={[
-        "#43B3AE",  // Soft sea green
-        "#207F79"   // Deep sea green
+        "#43B3AE", // Soft sea green
+        "#207F79", // Deep sea green
       ]}
     />
   );
