@@ -96,7 +96,11 @@ const HistoryFrame: React.FC<{
                 <HistoryElement
                   user={user}
                   time={new Date(startTime)}
-                  counts={history[startTime]}
+                  counts={
+                    history[startTime].length > 1
+                      ? history[startTime]
+                      : [history[startTime][0], history[startTime][0]]
+                  }
                 />
                 {index < recordStartTimes.length - 1 && (
                   <hr

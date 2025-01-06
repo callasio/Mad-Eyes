@@ -103,8 +103,12 @@ const VideoFrame: React.FC = () => {
                 Blink Detection
               </h2>
               <p style={{ color: "white", margin: 0, padding: "20px" }}>
-                Click the button above to start recording and see the blink
-                detection in action!
+                Click the{" "}
+                <span style={{ fontWeight: "bold" }}>
+                  <PlayArrowIcon style={{ verticalAlign: "middle" }} />
+                  Start Recording
+                </span>{" "}
+                button!
               </p>
             </div>
           )}
