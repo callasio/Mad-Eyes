@@ -7,47 +7,73 @@ import { useSession } from "next-auth/react";
 import { getFriendInvite } from "@/api/friend/getFriendInvite";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { themeColor } from "@/constants/colors";
+import { Friend } from "@/app/dashboard/page";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+
+interface TabButtonProps {
+  name: string;
+  icon: React.ReactNode;
+  active: boolean;
+  onTabClick: (name: string) => void;
+ }
 
 
-const FriendFrame: React.FC = () => {
-  const { user } = useAuth();
-  const { data: session } = useSession();
-
-  const [friendsLoading, setFriendsLoading] = useState(true);
-  const [friendsData, setFriendsData] = useState<any[]>([]);
-
-  const [invitesLoading, setInvitesLoading] = useState(true);
-  const [inviteData, setInviteData] = useState<any[]>([]);
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const fetchFriends = async () => {
-    if (!user) return;
-    const res = await getUserFriends(user.id);
-    if (!res.success) return;
-    setFriendsData(res.friends ?? []);
-    setFriendsLoading(false);
-  };
-
-  const fetchInvites = async () => {
-    if (!session) return;
-    const res = await getFriendInvite(session);
-
-    setInviteData(res);
-    setInvitesLoading(false);
-  };
-
-  useEffect(() => {
-    fetchFriends();
-    fetchInvites();
-  }, []);
-
+ const TabButton: React.FC<TabButtonProps> = ({ name, icon, active, onTabClick }) => (
+  <button
+    onClick={() => onTabClick(name.toLowerCase())}
+    style={{
+      padding: "8px 16px",
+      backgroundColor: active ? "#3D3D3D" : "transparent",
+      border: "none",
+      borderRadius: "8px",
+      color: "white",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+      fontSize: "14px",
+    }}
+  >
+    {icon}
+    {name}
+  </button>
+ );
+ 
+ const FriendFrame: React.FC = () => {
+  const { user } = useAuth();   
+  const { data: session } = useSession();   
+  const [activeTab, setActiveTab] = useState("friends");    
+  const [friendsLoading, setFriendsLoading] = useState(false);   
+   
+   const [invitesLoading, setInvitesLoading] = useState(true);   
+   const [inviteData, setInviteData] = useState<any[]>([]);    
+   const [searchQuery, setSearchQuery] = useState("");   
+   const [showFriends, setShowFriends] = useState(false);   
+   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
+ 
+  const [friendsData] = useState([
+    {
+      id: "1",
+      nickname: "Sarah",
+      email: "sarah@example.com",
+      isOnline: true
+    },
+    {
+      id: "2",
+      nickname: "Mike",
+      email: "mike@example.com",
+      isOnline: false
+    },
+    {
+      id: "3",
+      nickname: "John",
+      email: "john@example.com",
+      isOnline: true
+    }
+  ]);
+ 
   return (
-    <div
-      style={{
-        flex: 1,
-      }}
-    >
+    <div style={{ flex: 1 }}>
       <div
         style={{
           display: "flex",
@@ -72,115 +98,145 @@ const FriendFrame: React.FC = () => {
           }}
         />
       </div>
-
-      <div
-        style={{
-          backgroundColor: "#262335",
-          borderRadius: "25px",
-          objectFit: "cover",
-        }}
-      >
-        {friendsLoading ? (
-          <div>Loading... </div>
-        ) : friendsData.length !== 0 ? (
-          friendsData.map((friend) => (
-            <div
-              key={friend.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                marginLeft: "10px",
-                marginBottom: "15px",
-              }}
-            >
-              <img
-                src={friend.profilePicture}
-                alt="Profile"
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              />
-              <span>{friend.nickname}</span>
-            </div>
-          ))
-        ) : (
-          <div
-            style={{
-              height: "300px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              color: "rgba(255, 255, 255, 0.3)",
-              fontWeight: "bold",
-            }}
-          >
-            <PersonAddIcon
-              style={{
-                fontSize: "70px",
-                color: "rgba(255, 255, 255, 0.3)",
-              }}
-            />
-            Make new friends!
-          </div>
-        )}
-      </div>
-
-      <div
-        style={{
-          marginTop: "20px",
+ 
+      <div style={{ flex: 1 }}>
+        <div style={{
+          display: "flex",
+          gap: "10px",
+          marginBottom: "0px",
           padding: "10px",
+        }}>
+          <TabButton 
+            name="Friends" 
+            icon={<PersonIcon />} 
+            active={activeTab === "friends"} 
+            onTabClick={setActiveTab}
+          />
+          <TabButton 
+            name="Add" 
+            icon={<PersonAddIcon />} 
+            active={activeTab === "add"} 
+            onTabClick={setActiveTab}
+          />
+          <TabButton 
+            name="Requests" 
+            icon={<NotificationsIcon />} 
+            active={activeTab === "requests"} 
+            onTabClick={setActiveTab}
+          />
+        </div>
+ 
+        <div style={{
           backgroundColor: "#262335",
           borderRadius: "25px",
-          objectFit: "cover",
-        }}
-      >
-        <div
-          style={{
-            position: "relative",
-            margin: "10px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Search friends..."
-            style={{
-              width: "100%",
-              padding: "8px 12px",
-              backgroundColor: themeColor.primary,
-              border: "none",
-              borderRadius: "8px",
-              color: "white",
-              fontSize: "14px",
-              outline: "none",
-            }}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div
-            style={{
-              position: "absolute",
-              right: "12px",
-              zIndex: 1,
-              top: "50%",
-              transform: "translateY(-50%)",
-              color: "#999",
-            }}
-          >
-            🔍
-          </div>
+          padding: "20px",
+          height: "300px",
+        }}>
+          {friendsLoading ? (
+            <div>Loading... </div>
+          ) : (
+            <>
+              {activeTab === "friends" && (
+                <>
+                  <div style={{
+                    position: "relative",
+                    marginBottom: "15px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                    <input
+                      type="text"
+                      placeholder="Search friends..."
+                      style={{
+                        width: "100%",
+                        padding: "8px 12px",
+                        backgroundColor: themeColor.primary,
+                        border: "none",
+                        borderRadius: "8px",
+                        color: "white",
+                        fontSize: "14px",
+                        outline: "none",
+                      }}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <div style={{
+                      position: "absolute",
+                      right: "12px",
+                      zIndex: 1,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      color: "#999",
+                    }}>
+                      🔍
+                    </div>
+                  </div>
+                
+                  <div style={{
+                    marginTop: "10px",
+                    borderTop: "1px solid #444",
+                    paddingTop: "10px",
+                  }}>
+                    {friendsData.map((friend) => (
+                      <div
+                        key={friend.id}
+                        onClick={() => setSelectedFriend(friend)}
+                        style={{
+                          padding: "12px",
+                          borderRadius: "8px",
+                          backgroundColor: "#4D4766",
+                          marginBottom: "10px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "50%",
+                            backgroundColor: "#8E85B3",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "white",
+                          }}
+                        >
+                          {friend.nickname[0]}
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: "bold", marginBottom: "4px" }}>
+                            {friend.nickname}
+                          </div>
+                          <div style={{ fontSize: "12px", color: "#aaa" }}>
+                            {friend.email}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              {activeTab === "add" && (
+                <div style={{ color: "white", padding: "20px", textAlign: "center" }}>
+                  Add new friends content goes here
+                </div>
+              )}
+              {activeTab === "requests" && (
+                <div style={{ color: "white", padding: "20px", textAlign: "center" }}>
+                  Friend requests content goes here
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
   );
-};
+ };
+ 
 
 export default FriendFrame;
