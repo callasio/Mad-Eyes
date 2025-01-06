@@ -42,22 +42,31 @@ export const RecordingProvider = ({
 
     if (isRecording) {
       const webcam = await getWebcam();
-
       // video.style.display = 'none';
       videoRef.current!.srcObject = webcam;
       videoRef.current!.autoplay = true;
       setIsWebcamOn(true);
+
       videoRef.current!.onloadedmetadata = () => {
-        renderLoop();
+        const newSession = new RecordSession(
+          new Date().toISOString(),
+          session!,
+          onBlink,
+        )
+
+        setRecordSession(newSession);
+  
+        renderLoop(newSession);
       };
     } else {
+      setRecordSession(undefined);
       cancelAnimationFrame(animationFrameId);
       await stopWebcam();
       setIsWebcamOn(false);
       return;
     }
 
-    function renderLoop(lastVideoTime: number = -1) {
+    function renderLoop(recordSession: RecordSession, lastVideoTime: number = -1) {
       if (!isRecording || videoRef.current === null) {
         return;
       }
@@ -68,7 +77,7 @@ export const RecordingProvider = ({
         recordSession?.update(result);
       }
 
-      animationFrameId = requestAnimationFrame(() => renderLoop(currentTime));
+      animationFrameId = requestAnimationFrame(() => renderLoop(recordSession, currentTime));
     }
   };
 
@@ -77,17 +86,6 @@ export const RecordingProvider = ({
       recordSession.onBlink = onBlink;
     }
   }, [onBlink])
-
-  useEffect(() => {
-    if (isWebcamOn) {
-      setRecordSession(
-        new RecordSession(
-          new Date().toISOString(),
-          session!,
-          onBlink,
-        ));
-    }
-  }, [isWebcamOn])
 
   useEffect(() => {
     getFaceLandmark();

@@ -4,6 +4,7 @@ import { postBlinks } from "@/api/blinks/postBlinks";
 import { Session } from "next-auth";
 
 const HISTORY_SIZE = 200;
+const UPDATE_INTERVAL_MIN = 0.2;
 
 export default class RecordSession {
   private session: Session;
@@ -15,7 +16,7 @@ export default class RecordSession {
   private lastTime: number;
   private successTime: number = 0;
   private isBlinked: boolean = false;
-  private serverUploadTimeMinute: number = 1;
+  private serverUploadTimeMinute: number = UPDATE_INTERVAL_MIN;
 
   constructor(
     startTimeIso8601: string,
@@ -35,7 +36,7 @@ export default class RecordSession {
   public update = (faceLandmarkerResult: FaceLandmarkerResult) => {
     const eyesAreaRatio = getEyesAreaRatio(faceLandmarkerResult);
     const current = new Date().getTime();
-    if (isNaN(eyesAreaRatio)) {
+    if (isNaN(eyesAreaRatio) || eyesAreaRatio == 0) {
       this.lastTime = current;
       return;
     }
@@ -56,7 +57,7 @@ export default class RecordSession {
     this.isBlinked = nowBlinked;
 
     if (this.successTime > this.serverUploadTimeMinute * 60 * 1000) {
-      this.serverUploadTimeMinute += 1;
+      this.serverUploadTimeMinute += UPDATE_INTERVAL_MIN;
       postBlinks(this.startTimeIso8601, this.elapsedTime / 60 / 1000, this.blinkCounts.at(-1)!, this.session)
       console.log(`last minute: blinked ${this.blinkCounts.at(-1)} times`);
       this.blinkCounts.push(0);

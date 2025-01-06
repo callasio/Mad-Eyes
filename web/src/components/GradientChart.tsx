@@ -15,6 +15,8 @@ const GradientChart: React.FC<GradientChartProps> = ({ xAxisData, data, colors }
     value: data[index] || 0
   }));
 
+  const maxValue = Math.max(...data);
+
   return (
     <div style={{ width: "100%", height: 300 }}>
       <ResponsiveContainer>
@@ -37,9 +39,8 @@ const GradientChart: React.FC<GradientChartProps> = ({ xAxisData, data, colors }
           <YAxis 
             stroke={"#FFFFFF"}
             axisLine={{ stroke: "white" }}
-
-        
-            tick = {false}
+            domain={[0, maxValue]}
+            tick={{ fill: "white" }}
           />
           <Area 
             type="monotone" 

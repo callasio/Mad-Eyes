@@ -47,7 +47,7 @@ def activity_init(app: FastAPI):
     latest = min(result, key=lambda x: (x[1], x[2]))
 
     record_start_time = datetime.fromisoformat(latest[1])
-    record_duration = timedelta(minutes=latest[2])
+    record_duration = timedelta(minutes=float(latest[2]))
 
     record_last = record_start_time + record_duration
 
