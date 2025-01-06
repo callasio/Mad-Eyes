@@ -8,6 +8,7 @@ import { getFriendInvite } from "@/api/friend/getFriendInvite";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { themeColor } from "@/constants/colors";
 
+
 const FriendFrame: React.FC = () => {
   const { user } = useAuth();
   const { data: session } = useSession();
