@@ -71,7 +71,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
     alignItems: "center"
   }}
 >
-  {/* Top section with image and edit button */}
+ 
   <div
     style={{
       display: "flex",
@@ -89,21 +89,55 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
     {userData.nickname}
     </div>
     <div
-    style={{marginTop: "0px", fontSize: "17px", marginBottom: "20px", color: "#808080"}}>
+    style={{marginTop: "0px", fontSize: "17px", marginBottom: "20px", color: "#ccc"}}>
     {userData.email}
     </div>
     {user?.id === id && (
-      <GradientButton onClick={() => router.push("/profile/edit")}>
+      <button 
+      style={{
+        width: "100%",
+        padding: "8px",
+        backgroundColor: "#8176AF",
+        border: "none",
+        borderRadius: "20px",
+        color: "white",
+        cursor: "pointer",
+        fontSize: "20px",
+        fontWeight: "bold",
+        marginTop: "5px",
+        marginBottom: "5px",
+        paddingLeft: "50px",
+        paddingRight: "50px"
+      }}
+      onClick={() => router.push("/profile/edit")}>
         <div>Edit Profile</div>
-      </GradientButton>
+      </button>
     )}
+    <button 
+      style={{
+        width: "100%",
+        padding: "8px",
+        backgroundColor: "#8176AF",
+        border: "none",
+        borderRadius: "20px",
+        color: "white",
+        cursor: "pointer",
+        fontSize: "20px",
+        fontWeight: "bold",
+        marginTop: "5px",
+        marginBottom: "5px",
+        paddingLeft: "50px",
+        paddingRight: "50px"
+      }}
+      onClick={() => router.push("/manage")}>
+        <div>Manage Friends</div>
+      </button>
   </div>
 
-  {/* Sign Out button pushed to bottom */}
   <div style={{ 
-     marginTop: "150px",
+     marginTop: "100px",
     marginBottom: "40px",
-    padding: "20px" // Adds some space from the very bottom
+    padding: "20px" 
   }}>
     <SignOutButton />
   </div>

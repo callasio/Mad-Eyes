@@ -54,6 +54,9 @@ const DashboardDialog: React.FC<DialogProps> = ({
     friend.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const [showFriendOptions, setShowFriendOptions] = useState(false);
+  const [showFriendsList, setShowFriendsList] = useState(false);
+
   return (
     <div
       style={{
@@ -148,25 +151,80 @@ const DashboardDialog: React.FC<DialogProps> = ({
       
 
       <button
-        onClick={() => setShowFriends(!showFriends)}
-        style={{
-          width: "100%",
-          padding: "8px",
-          backgroundColor: "#8176AF",
-          border: "none",
-          borderRadius: "20px",
-          color: "white",
-          cursor: "pointer",
-          fontSize: "14px",
-          fontWeight: "bold",
-          marginTop: "10px",
-          marginBottom: "10px",
-        }}
-      >
-        {showFriends ? "Hide Friends" : "Show Friends"}
-      </button>
-      
-      {showFriends && (
+      onClick={() => {
+        setShowFriendOptions(!showFriendOptions);
+        if (!showFriendOptions) {
+          setShowFriendsList(false); // Reset friends list when closing options
+        }
+      }}
+      style={{
+        width: "100%",
+        padding: "8px",
+        backgroundColor: "#8176AF",
+        border: "none",
+        borderRadius: "20px",
+        color: "white",
+        cursor: "pointer",
+        fontSize: "14px",
+        fontWeight: "bold",
+        marginTop: "10px",
+        marginBottom: "10px",
+      }}
+    >
+      {showFriendsList ? "Hide Friends" : "Friends"}
+    </button>
+
+    {/* Friend Options */}
+    {showFriendOptions && !showFriendsList && (
+      <div style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px"
+      }}>
+        <button
+          onClick={() => {
+            // Add Friend logic here
+          }}
+          style={{
+            width: "100%",
+            padding: "8px",
+            backgroundColor: "#2B2D31",
+            border: "none",
+            borderRadius: "4px",
+            color: "white",
+            cursor: "pointer",
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          Add Friends
+        </button>
+
+        <button
+          onClick={() => {
+            setShowFriendsList(true);
+            setShowFriendOptions(false);
+          }}
+          style={{
+            width: "100%",
+            padding: "8px",
+            backgroundColor: "#2B2D31",
+            border: "none",
+            borderRadius: "4px",
+            color: "white",
+            cursor: "pointer",
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          Friends
+        </button>
+      </div>
+    )}
+
+    {/* Friends List */}
+    {showFriendsList && (
       <>
 
         {/* Search Bar */}
