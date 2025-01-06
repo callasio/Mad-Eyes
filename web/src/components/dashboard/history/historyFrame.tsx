@@ -4,9 +4,11 @@ import { useAuth } from "@/auth/AuthProvider";
 import Header2 from "@/components/typography/Header2";
 import { getBlinkFromUserId } from "@/api/blinks/getBlinkFromUserId";
 import HistoryElement from "./historyElement";
+import { useRecording } from "@/video/RecordingProvider";
 
 const HistoryFrame: React.FC = () => {
   const { user } = useAuth();
+  const { isRecording } = useRecording();
 
   if (!user) {
     return null;
@@ -31,7 +33,7 @@ const HistoryFrame: React.FC = () => {
 
   useEffect(() => {
     fetchHistory();
-  }, []);
+  }, [isRecording]);
 
   return (
     <div

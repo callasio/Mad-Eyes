@@ -98,6 +98,23 @@ def user_friend_init(app: FastAPI):
     )
 
     return {"status": "success"}
+  
+  @app.delete("/friend/invite/{friend_id}")
+  async def delete_invite(friend_id: str, token: str=Depends(oauth2_scheme)):
+    user_google = await get_current_user(token)
+
+    existing_invite = db_execute(lambda cursor:
+      cursor.execute("SELECT * FROM friend_invites WHERE id=? AND friend_id=?", (friend_id, user_google.google_id)).fetchone()
+    )
+
+    if existing_invite is None:
+      return {"status": "not_found"}
+
+    db_execute(lambda cursor:
+      cursor.execute("DELETE FROM friend_invites WHERE id=? AND friend_id=?", (friend_id, user_google.google_id))
+    )
+
+    return {"status": "success"}
 
   @app.delete("/friend/{friend_id}")
   async def delete_friend(friend_id: str, token: str=Depends(oauth2_scheme)):
