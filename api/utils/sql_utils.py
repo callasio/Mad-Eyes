@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS user_friends (
 CREATE TABLE IF NOT EXISTS blink_event (
   id TEXT NOT NULL,
   record_id TEXT NOT NULL,
-  minutes INTEGER NOT NULL,
+  minutes REAL NOT NULL,
   count INTEGER NOT NULL,
   PRIMARY KEY (id, record_id, minutes)
 );
