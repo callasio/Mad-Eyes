@@ -26,8 +26,7 @@ CREATE TABLE IF NOT EXISTS blink_event (
   record_id TEXT NOT NULL,
   minutes INTEGER NOT NULL,
   count INTEGER NOT NULL,
-  PRIMARY KEY (id, record_id, minutes),
-  ORDER BY record_id, minutes
+  PRIMARY KEY (id, record_id, minutes)
 );
 """,
 """
