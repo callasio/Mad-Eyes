@@ -1,11 +1,15 @@
 import SignOutButton from "@/constants/signOutButton";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/auth/AuthProvider";
 import CloseIcon from "@mui/icons-material/Close";
 import FriendsFrame from "./friends";
 import { Friend } from "@/app/dashboard/page";
 import SelectedFriendFrame from "./selectedFriend";
+import GradientButton from "@/components/GradientButton";
 
 interface User {
+  id: string;
   profilePicture?: string;
   nickname: string;
   email: string;
@@ -17,6 +21,7 @@ interface DialogProps {
   setShowDialog: (show: boolean) => void;
 }
 
+
 const DashboardDialog: React.FC<DialogProps> = ({
   user,
   friends,
@@ -24,6 +29,9 @@ const DashboardDialog: React.FC<DialogProps> = ({
 }) => {
   const [showFriends, setShowFriends] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
+  const router = useRouter();
+  
+  
 
   const getElapsedTime = (start: Date) => {
     const now = new Date();
@@ -51,7 +59,7 @@ const DashboardDialog: React.FC<DialogProps> = ({
       style={{
         position: "absolute",
         top: "70px",
-        left: "20px",
+        right: "20px",  // left: "20px"를 right: "20px"로 변경
         backgroundColor: "#2D2D2D",
         borderRadius: "12px",
         padding: "20px",
@@ -137,6 +145,7 @@ const DashboardDialog: React.FC<DialogProps> = ({
           {user?.email}
         </div>
       </div>
+      
 
       <button
         onClick={() => setShowFriends(!showFriends)}
@@ -157,9 +166,6 @@ const DashboardDialog: React.FC<DialogProps> = ({
         {showFriends ? "Hide Friends" : "Show Friends"}
       </button>
       
-
-
-
       {showFriends && (
       <>
 
@@ -215,8 +221,26 @@ const DashboardDialog: React.FC<DialogProps> = ({
           setSelectedFriend={setSelectedFriend}
         />
       )}
+      {/* Profile 버튼을 왼쪽으로 이동 */}
+    <button 
+    style={{
+      width: "100%",
+      padding: "8px",
+      backgroundColor: "#8176AF",
+      border: "none",
+      borderRadius: "20px",
+      color: "white",
+      cursor: "pointer",
+      fontSize: "14px",
+      fontWeight: "bold",
+      marginTop: "4px",
+      marginBottom: "4px",
+    }}onClick={() => {
+      router.push("/profile/" + user?.id);
+    }}>
+      Show Profile
+    </button>
 
-      <SignOutButton />
     </div>
   );
 };

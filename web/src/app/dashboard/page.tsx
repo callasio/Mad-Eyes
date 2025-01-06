@@ -4,13 +4,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/auth/AuthProvider";
-import GradientButton from "@/components/GradientButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { useRecording } from "@/video/RecordingProvider";
 import WebcamFrame from "@/components/dashboard/video/WebcamFrame";
 import DashboardDialog from "@/components/dashboard/dialog/dialog";
 import LoadingEyeProgress from "@/components/LoadingEyeProgress";
+import { themeColor } from "@/constants/colors";
 
 interface WelcomePageProps {}
 
@@ -81,8 +81,26 @@ export default function WelcomePage({}: WelcomePageProps) {
           color: "white",
         }}
       >
+        {/* Profile 버튼을 왼쪽으로 이동 */}
+        <div 
+          style={{ 
+            cursor: "pointer", 
+            backgroundColor: "#302C42",
+            color: "white",  // 텍스트가 잘 보이도록 색상 추가
+             fontFamily: 'Montserrat, sans-serif',
+             fontWeight: "bold",
+             fontSize: "25px",
+             marginLeft: "8px",
+             marginTop: "10px"
+          }} 
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          Mad Eyes
+        </div>
         <div
-          style={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 10, cursor: "pointer" }}
+          style={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 10, cursor: "pointer", marginRight: "17px", marginTop: "7px"}}
           onClick={() => setShowDialog(!showDialog)}
           >
           {user?.profilePicture ? (
@@ -123,11 +141,7 @@ export default function WelcomePage({}: WelcomePageProps) {
             {user?.nickname}
           </h1>
         </div>
-        <GradientButton onClick={() => {
-          router.push("/profile/" + user?.id);
-        }}>
-          Profile
-        </GradientButton>
+        
         {/* User Profile Dialog */}
         {showDialog && (
           <DashboardDialog

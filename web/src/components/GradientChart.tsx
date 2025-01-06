@@ -38,13 +38,14 @@ const GradientChart: React.FC<GradientChartProps> = ({ xAxisData, data, colors }
             stroke={"#FFFFFF"}
             axisLine={{ stroke: "white" }}
 
-            tick={{ fill: "white" }}
+        
+            tick = {false}
           />
           <Area 
             type="monotone" 
             dataKey="value" 
             stroke={"#1B6C67"}
-            strokeWidth={3}
+            strokeWidth={4}
             fillOpacity={1} 
             fill="url(#colorGradient)" 
           />

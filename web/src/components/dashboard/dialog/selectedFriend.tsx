@@ -45,7 +45,7 @@ const SelectedFriendFrame: React.FC<SelectedFriendFrameProps> = ({
     <div
       style={{
         position: "absolute",
-        left: "320px",
+        right: "315px",
         top: "0",
         backgroundColor: "#2D2D2D",
         borderRadius: "12px",

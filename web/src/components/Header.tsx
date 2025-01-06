@@ -16,7 +16,11 @@ const Header = () => {
         color: "white",
       }}
     >
-      <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+      <h1 style={{ margin: 0, fontFamily: 'Montserrat, sans-serif',
+             fontWeight: "bold",
+             fontSize: "25px",
+             marginLeft: "8px",
+             marginTop: "10px"}}>
         Mad Eyes
       </h1>
       <div style={{ marginLeft: "auto" }}>
