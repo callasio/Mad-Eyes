@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS blink_event (
   record_id TEXT NOT NULL,
   minutes INTEGER NOT NULL,
   count INTEGER NOT NULL,
-  PRIMARY KEY (id, record_id, minutes)
+  PRIMARY KEY (id, record_id, minutes),
+  ORDER BY record_id, minutes
 );
 """,
 """
@@ -47,9 +48,10 @@ CREATE INDEX IF NOT EXISTS friend_invites_idx_id ON friend_invites (friend_id);
 """
 CREATE TABLE IF NOT EXISTS activity (
   id TEXT PRIMARY KEY,
-  last_active TIMESTAMP NOT NULL
+  last_active TIMESTAMP NOT NULL,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 )
-"""
+""",
 ]
 
 def new_connection():

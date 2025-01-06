@@ -34,3 +34,27 @@ def activity_init(app: FastAPI):
       return False
 
     return True
+  
+  @app.get("/record/current/{user_id}")
+  async def get_current_record(user_id: str):
+    result: list = db_execute(lambda cursor:
+      cursor.execute("SELECT * FROM blink_event WHERE id=?", (user_id,))
+    )
+
+    if result is None:
+      return { "status": "success", "record": None }
+    
+    latest = min(result, key=lambda x: (x[1], x[2]))
+
+    record_start_time = datetime.fromisoformat(latest[1])
+    record_duration = timedelta(minutes=latest[2])
+
+    record_last = record_start_time + record_duration
+
+    is_current_session = record_last >= datetime.now() - timedelta(minutes=5)
+
+    return { "status": "success", "record": {
+      "start": latest[1],
+      "duration": latest[2],
+      "online": is_current_session
+    }}
