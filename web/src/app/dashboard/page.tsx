@@ -136,11 +136,7 @@ export default function WelcomePage({}: WelcomePageProps) {
 
         {/* User Profile Dialog */}
         {showDialog && (
-          <DashboardDialog
-            user={user!}
-            friends={[]}
-            setShowDialog={setShowDialog}
-          />
+          <DashboardDialog user={user!} setShowDialog={setShowDialog} />
         )}
       </header>
 
