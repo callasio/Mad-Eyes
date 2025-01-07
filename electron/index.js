@@ -7,6 +7,8 @@ const { Notification } = require('electron');
 let mainWindow;
 let tray;
 
+app.setAsDefaultProtocolClient('madeyes');
+
 app.on('ready', () => {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
@@ -14,6 +16,7 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({
     width: width,
     height: height,
+    icon: path.join(__dirname, 'icon-large.png'),
     webPreferences: {
       nodeIntegration: false, // Disable Node.js integration for security
       contextIsolation: true, // Enable context isolation
@@ -22,6 +25,12 @@ app.on('ready', () => {
       backgroundThrottling: false,
     },
   });
+
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+    const authCode = new URL(url).searchParams.get('code');
+    mainWindow.webContents.send('auth-code', authCode);
+  })
 
   app.commandLine.appendSwitch('disable-background-timer-throttling');
 
@@ -61,8 +70,16 @@ app.on('ready', () => {
     }
   });
 
+  mainWindow.webContents.on('did-navigate', (event, url) => {
+    if (url.includes('accounts.google.com')) {
+      event.preventDefault();
+      mainWindow.loadURL("https://madcamp-week2-2-783352439162.asia-northeast3.run.app")
+      require('electron').shell.openExternal(url);
+    }
+  })
+
   // Load the target domain
-  mainWindow.loadURL('http://localhost:3000');
+  mainWindow.loadURL('https://madcamp-week2-2-783352439162.asia-northeast3.run.app');
 
   // Optional: Clear cache on app start
   session.defaultSession.clearCache();
@@ -93,9 +110,8 @@ app.on('ready', () => {
 
   // Handle minimize to tray on close
   mainWindow.on('close', (event) => {
-    event.preventDefault();
     if (!app.isQuiting) {
-      console.log('hiding');
+      event.preventDefault();
       mainWindow.hide();
     }
   });
