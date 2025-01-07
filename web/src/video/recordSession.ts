@@ -1,7 +1,7 @@
 import { FaceLandmarkerResult } from "@mediapipe/tasks-vision";
-import { getEyesAreaRatio } from "./eyes";
 import { postBlinks } from "@/api/blinks/postBlinks";
 import { Session } from "next-auth";
+import { getEyesAreaRatio, getEyesCenter, getEyesLength, Point } from "./eyes";
 
 const HISTORY_SIZE = 200;
 export const UPDATE_INTERVAL_MIN = 0.2;
@@ -11,6 +11,9 @@ export default class RecordSession {
   public startTimeIso8601: string;
   public blinkCounts: number[] = [0];
   public onBlink: () => void = () => {};
+  public eyesCenter: [Point, Point] = [ { x: 0, y: 0 }, { x: 0, y: 0 } ];
+  public eyesLength: [number, number] = [0, 0];
+  public video: HTMLVideoElement;
 
   private ratioHistory: number[] = [];
   private lastTime: number;
@@ -22,11 +25,13 @@ export default class RecordSession {
     startTimeIso8601: string,
     session: Session,
     onBlink: () => void = () => {},
+    video: HTMLVideoElement
   ) {
     this.startTimeIso8601 = startTimeIso8601;
     this.lastTime = new Date(startTimeIso8601).getTime();
     this.session = session;
     this.onBlink = onBlink;
+    this.video = video;
   }
 
   private get elapsedTime() {
@@ -35,6 +40,8 @@ export default class RecordSession {
  
   public update = (faceLandmarkerResult: FaceLandmarkerResult) => {
     const eyesAreaRatio = getEyesAreaRatio(faceLandmarkerResult);
+    this.eyesCenter = getEyesCenter(faceLandmarkerResult, this.video.videoWidth, this.video.videoHeight);
+    this.eyesLength = getEyesLength(faceLandmarkerResult, this.video.videoWidth, this.video.videoHeight);
     const current = new Date().getTime();
     if (isNaN(eyesAreaRatio) || eyesAreaRatio == 0) {
       this.lastTime = current;

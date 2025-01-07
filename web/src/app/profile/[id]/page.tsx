@@ -61,87 +61,97 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
       }}
     >
       <GradientFill>
-        <Header2 text={`${userData.nickname}'s profile`} />
+        <Header2 text="MY PROFILE" />
         <Separator />
         <div
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",  // Ensures container takes full height
-    alignItems: "center"
-  }}
->
- 
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 10
-    }}
-  >
-    <ImageForm 
-      profileImage={userData.profilePicture || ""} 
-      imagePlaceholderText={userData.nickname} 
-    />
-    <div
-    style={{marginTop: "0px", fontSize: "22px", fontWeight: "bold",  }}>
-    {userData.nickname}
-    </div>
-    <div
-    style={{marginTop: "0px", fontSize: "17px", marginBottom: "20px", color: "#ccc"}}>
-    {userData.email}
-    </div>
-    {user?.id === id && (
-      <button 
-      style={{
-        width: "100%",
-        padding: "8px",
-        backgroundColor: "#8176AF",
-        border: "none",
-        borderRadius: "20px",
-        color: "white",
-        cursor: "pointer",
-        fontSize: "20px",
-        fontWeight: "bold",
-        marginTop: "5px",
-        marginBottom: "5px",
-        paddingLeft: "50px",
-        paddingRight: "50px"
-      }}
-      onClick={() => router.push("/profile/edit")}>
-        <div>Edit Profile</div>
-      </button>
-    )}
-    <button 
-      style={{
-        width: "100%",
-        padding: "8px",
-        backgroundColor: "#8176AF",
-        border: "none",
-        borderRadius: "20px",
-        color: "white",
-        cursor: "pointer",
-        fontSize: "20px",
-        fontWeight: "bold",
-        marginTop: "5px",
-        marginBottom: "5px",
-        paddingLeft: "50px",
-        paddingRight: "50px"
-      }}
-      onClick={() => router.push("/manage")}>
-        <div>Manage Friends</div>
-      </button>
-  </div>
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh", // Ensures container takes full height
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
+            <ImageForm
+              profileImage={userData.profilePicture || ""}
+              imagePlaceholderText={userData.nickname}
+            />
+            <div
+              style={{ marginTop: "0px", fontSize: "22px", fontWeight: "bold" }}
+            >
+              {userData.nickname}
+            </div>
+            <div
+              style={{
+                marginTop: "0px",
+                fontSize: "17px",
+                marginBottom: "20px",
+                color: "#ccc",
+              }}
+            >
+              {userData.email}
+            </div>
+            {user?.id === id && (
+              <button
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  backgroundColor: "#8176AF",
+                  border: "none",
+                  borderRadius: "20px",
+                  color: "white",
+                  cursor: "pointer",
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  marginTop: "5px",
+                  marginBottom: "5px",
+                  paddingLeft: "50px",
+                  paddingRight: "50px",
+                }}
+                onClick={() => router.push("/profile/edit")}
+              >
+                <div>Edit Profile</div>
+              </button>
+            )}
+            <button
+              style={{
+                width: "100%",
+                padding: "8px",
+                backgroundColor: "#8176AF",
+                border: "none",
+                borderRadius: "20px",
+                color: "white",
+                cursor: "pointer",
+                fontSize: "20px",
+                fontWeight: "bold",
+                marginTop: "5px",
+                marginBottom: "5px",
+                paddingLeft: "50px",
+                paddingRight: "50px",
+              }}
+              onClick={() => router.push("/manage")}
+            >
+              <div>Manage Friends</div>
+            </button>
+          </div>
 
-  <div style={{ 
-     marginTop: "100px",
-    marginBottom: "40px",
-    padding: "20px" 
-  }}>
-    <SignOutButton />
-  </div>
-</div>
+          <div
+            style={{
+              marginTop: "100px",
+              marginBottom: "40px",
+              padding: "20px",
+            }}
+          >
+            <SignOutButton />
+          </div>
+        </div>
       </GradientFill>
     </main>
   );

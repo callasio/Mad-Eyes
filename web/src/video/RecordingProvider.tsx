@@ -28,7 +28,9 @@ export const RecordingProvider = ({
 
   const { data: session } = useSession();
 
-  const [recordSession, setRecordSession] = React.useState<undefined | RecordSession>(undefined);
+  const [recordSession, setRecordSession] = React.useState<
+    undefined | RecordSession
+  >(undefined);
   const [blinkCount, setBlinkCount] = React.useState<number>(0);
   const [isBlinked, setIsBlinked] = React.useState<boolean>(false);
   const [isRecording, setIsRecording] = React.useState<boolean>(false);
@@ -52,10 +54,11 @@ export const RecordingProvider = ({
           new Date().toISOString(),
           session!,
           onBlink,
-        )
+          videoRef.current!
+        );
 
         setRecordSession(newSession);
-  
+
         renderLoop(newSession);
       };
     } else {
@@ -66,7 +69,10 @@ export const RecordingProvider = ({
       return;
     }
 
-    function renderLoop(recordSession: RecordSession, lastVideoTime: number = -1) {
+    function renderLoop(
+      recordSession: RecordSession,
+      lastVideoTime: number = -1
+    ) {
       if (!isRecording || videoRef.current === null) {
         return;
       }
@@ -77,7 +83,9 @@ export const RecordingProvider = ({
         recordSession?.update(result);
       }
 
-      animationFrameId = requestAnimationFrame(() => renderLoop(recordSession, currentTime));
+      animationFrameId = requestAnimationFrame(() =>
+        renderLoop(recordSession, currentTime)
+      );
     }
   };
 
@@ -85,7 +93,7 @@ export const RecordingProvider = ({
     if (recordSession) {
       recordSession.onBlink = onBlink;
     }
-  }, [onBlink])
+  }, [onBlink]);
 
   useEffect(() => {
     getFaceLandmark();
@@ -100,7 +108,14 @@ export const RecordingProvider = ({
 
   return (
     <RecordingContext.Provider
-      value={{ isRecording, isWebcamOn, recordSession, setIsRecording, videoRef, setOnBlink }}
+      value={{
+        isRecording,
+        isWebcamOn,
+        recordSession,
+        setIsRecording,
+        videoRef,
+        setOnBlink,
+      }}
     >
       {isRecording && (
         <video

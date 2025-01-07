@@ -1,11 +1,9 @@
 import { FaceLandmarkerResult } from "@mediapipe/tasks-vision";
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
-
-const HISTORY_SIZE = 200;
 
 const RightEyeIndex = [
   33, 246, 161, 160, 159, 158, 157, 173, 133, 155, 154, 153, 145, 144, 163, 7,
@@ -17,11 +15,56 @@ const LeftEyeIndex = [
   380, 362,
 ];
 
+const RightEyeEndsIndex = [33, 133];
+const LeftEyeEndsIndex = [362, 263];
+
 const FaceBorderIndex = [
   10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378,
   400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21,
   54, 103, 67, 109, 10,
 ];
+
+export function getEyesCenter(landmarkderResults: FaceLandmarkerResult, width: number, height: number): [Point, Point] {
+  const leftEyeEnds = getPoints(landmarkderResults, LeftEyeEndsIndex);
+  const rightEyeEnds = getPoints(landmarkderResults, RightEyeEndsIndex);
+
+  if (leftEyeEnds.length !== 2 || rightEyeEnds.length !== 2) {
+    return [{ x: 0, y: 0 }, { x: 0, y: 0 }];
+  }
+
+  const leftEyeCenter = {
+    x: (leftEyeEnds[0].x + leftEyeEnds[1].x) / 2 * width,
+    y: (leftEyeEnds[0].y + leftEyeEnds[1].y) / 2 * height,
+  };
+
+  const rightEyeCenter = {
+    x: (rightEyeEnds[0].x + rightEyeEnds[1].x) / 2 * width,
+    y: (rightEyeEnds[0].y + rightEyeEnds[1].y) / 2 * height,
+  };
+
+  return [leftEyeCenter, rightEyeCenter];
+}
+
+export function getEyesLength(landmarkderResults: FaceLandmarkerResult, width: number, height: number): [number, number] {
+  const leftEyeEnds = getPoints(landmarkderResults, LeftEyeEndsIndex);
+  const rightEyeEnds = getPoints(landmarkderResults, RightEyeEndsIndex);
+
+  if (leftEyeEnds.length !== 2 || rightEyeEnds.length !== 2) {
+    return [0, 0];
+  }
+
+  const leftEyeLength = Math.sqrt(
+    Math.pow((leftEyeEnds[0].x - leftEyeEnds[1].x) * width, 2) +
+    Math.pow((leftEyeEnds[0].y - leftEyeEnds[1].y) * height, 2)
+  );
+
+  const rightEyeLength = Math.sqrt(
+    Math.pow((rightEyeEnds[0].x - rightEyeEnds[1].x) * width, 2) +
+    Math.pow((rightEyeEnds[0].y - rightEyeEnds[1].y) * height, 2)
+  );
+
+  return [leftEyeLength, rightEyeLength];
+}
 
 export function getEyesAreaRatio(landmarkderResults: FaceLandmarkerResult): number {
   const leftEyeArea = getFacePointsArea(landmarkderResults, LeftEyeIndex);
