@@ -215,13 +215,7 @@ const DashboardDialog: React.FC<DialogProps> = ({
         </>
       )}
 
-      {selectedFriend && (
-        <SelectedFriendFrame
-          selectedFriend={selectedFriend}
-          setSelectedFriend={setSelectedFriend}
-          
-        />
-      )}
+      
       {/* Profile 버튼을 왼쪽으로 이동 */}
     <button 
     style={{

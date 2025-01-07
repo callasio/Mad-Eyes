@@ -12,6 +12,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import SelectedFriendFrame from "../dialog/selectedFriend";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import ExpandableFriendList from '../dialog/selectedFriend';
 
 
 
@@ -21,6 +22,38 @@ interface TabButtonProps {
   active: boolean;
   onTabClick: (name: string) => void;
  }
+
+ const getElapsedTime = (startTime: Date | undefined): string => {
+  if (!startTime) return "0m";
+  
+  const now = new Date();
+  const diffMs = now.getTime() - startTime.getTime();
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffHrs > 0) {
+    return `${diffHrs}h ${diffMins}m`;
+  } else {
+    return `${diffMins}m`;
+  }
+};
+
+const getSessionDuration = (session: { start: Date; end?: Date } | undefined): string => {
+  if (!session?.start) return "0m";
+  
+  const startTime = new Date(session.start);
+  const endTime = session.end ? new Date(session.end) : new Date();
+
+  const diffMs = endTime.getTime() - startTime.getTime();
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffHrs > 0) {
+    return `${diffHrs}h ${diffMins}m`;
+  } else {
+    return `${diffMins}m`;
+  }
+};
 
 
  const TabButton: React.FC<TabButtonProps> = ({ name, icon, active, onTabClick }) => (
@@ -47,7 +80,7 @@ interface TabButtonProps {
  const FriendFrame: React.FC = () => {
   const { user } = useAuth();   
   const { data: session } = useSession();   
-  const [activeTab, setActiveTab] = useState("friends");    
+  const [activeTab, setActiveTab] = useState("friends"); 
   const [friendsLoading, setFriendsLoading] = useState(false);   
    
    const [invitesLoading, setInvitesLoading] = useState(true);   
@@ -56,6 +89,7 @@ interface TabButtonProps {
    const [showFriends, setShowFriends] = useState(false);   
    const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
    const [position, setPosition] = useState<{top: number, left: number}>({top: 0, left: 0});
+   const [expandedFriendId, setExpandedFriendId] = useState<string | null>(null);
 
    const [friendsData, setFriendsData] = useState<Friend[]>([
     {
@@ -225,9 +259,7 @@ const filteredFriends = friendsData.filter((friend)=>
                     }}>
                       🔍
                     </div>
-                  </div>
-                  
-                
+                  </div>                
                   <div style={{
                     marginTop: "10px",
                     borderTop: "1px solid #444",
@@ -236,61 +268,120 @@ const filteredFriends = friendsData.filter((friend)=>
                     {filteredFriends.map((friend) => (
                       <div
                         key={friend.id}
-                        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setPosition({
-                            top: rect.bottom + 100, // 선택한 항목 아래 10px 간격
-                            left: rect.left +10
-                          });
-                          setSelectedFriend(friend);
-                        }}
+                        onClick={() => setExpandedFriendId(expandedFriendId === friend.id ? null : friend.id)}
                         style={{
-                          padding: "12px",
-                          borderRadius: "8px",
-                          backgroundColor: "#4D4766",
                           marginBottom: "10px",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
                         }}
                       >
                         <div
                           style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "50%",
-                            backgroundColor: "#8E85B3",
+                            padding: "12px",
+                            borderRadius: "8px",
+                            backgroundColor: "#4D4766",
+                            cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "center",
-                            color: "white",
+                            gap: "10px",
                           }}
                         >
-                          {friend.nickname[0]}
-                        </div>
-                        <div>
-                          <div style={{ fontWeight: "bold", marginBottom: "4px" }}>
-                            {friend.nickname}
+                          <div
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              borderRadius: "50%",
+                              backgroundColor: "#8E85B3",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "white",
+                            }}
+                          >
+                            {friend.nickname[0]}
                           </div>
-                          <div style={{ fontSize: "12px", color: "#aaa" }}>
-                            {friend.email}
+
+                          <div style={{ flexGrow: 1 }}>
+                            <div style={{ fontWeight: "bold", marginBottom: "4px" }}>
+                              {friend.nickname}
+                            </div>
+                            <div style={{ fontSize: "12px", color: "#aaa" }}>
+                              {friend.email}
+                            </div>
+                          </div>
+
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <div style={{
+                              width: "8px",
+                              height: "8px",
+                              borderRadius: "50%",
+                              backgroundColor: friend.isOnline ? "#4CAF50" : "#666",
+                            }} />
+                            <span style={{
+                              transform: expandedFriendId === friend.id ? "rotate(180deg)" : "rotate(0deg)",
+                              transition: "transform 0.3s ease",
+                              color: "#aaa",
+                            }}>▼</span>
+                          </div>
+                        </div>
+
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            maxHeight: expandedFriendId === friend.id ? "200px" : "0",
+                            opacity: expandedFriendId === friend.id ? 1 : 0,
+                            transition: "all 0.3s ease",
+                          }}
+                        >
+                          <div style={{
+                            marginTop: "4px",
+                            padding: "16px",
+                            backgroundColor: "#383838",
+                            borderRadius: "8px",
+                          }}>
+                            <div style={{ textAlign: "center" }}>
+                              <div style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "8px",
+                                marginBottom: "16px",
+                                color: friend.isOnline ? "#4CAF50" : "#666",
+                              }}>
+                                {friend.isOnline ? "Currently Online" : "Offline"}
+                              </div>
+
+                              <div style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                padding: "0 16px",
+                              }}>
+                                <div>
+                                  <div style={{ color: "#aaa", marginBottom: "4px" }}>Started</div>
+                                  <div style={{ color: "white", fontSize: "16px" }}>
+                                    {friend.lastSession?.start.toLocaleTimeString([], {
+                                      hour: '2-digit',
+                                      minute: '2-digit'
+                                    })}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div style={{ color: "#aaa", marginBottom: "4px" }}>Duration</div>
+                                  <div style={{ color: "white", fontSize: "16px" }}>
+                                    {friend.isOnline
+                                      ? getElapsedTime(friend.lastSession?.start)
+                                      : getSessionDuration(friend.lastSession)
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      
                     ))}
-                    {/* SelectedFriendFrame 표시 */}
-                  {selectedFriend && (
-                    <SelectedFriendFrame
-                      selectedFriend={selectedFriend}
-                      setSelectedFriend={setSelectedFriend} // 닫기 버튼에서 상태 초기화
-                      position={position}
-                    />
-                  )}
                   </div>
                 </>
               )}
+
               {activeTab === "add" && (
             <div style={{ color: "white", padding: "0px", textAlign: "center" }}>
               <div style={{
