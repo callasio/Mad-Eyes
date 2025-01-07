@@ -1,32 +1,28 @@
+import { Friend } from "@/app/dashboard/page";
 import React, { useState } from "react";
-
-interface Friend {
-  id: string;
-  profilePicture?: string;
-  nickname: string;
-  email: string;
-  online: boolean;
-  start?: Date;
-  duration?: number;
-}
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useRouter } from "next/navigation";
 
 interface FriendElementProps {
   friend: Friend;
-  expandedFriendId: string | null;
-  setExpandedFriendId: (id: string | null) => void;
+  showToggle?: boolean;
+  expandedFriendId?: string | null;
+  setExpandedFriendId?: (id: string | null) => void;
 }
 
 const FriendElement: React.FC<FriendElementProps> = ({
   friend,
-  expandedFriendId,
-  setExpandedFriendId,
+  expandedFriendId = null,
+  showToggle = true,
+  setExpandedFriendId = () => {},
 }) => {
+  const router = useRouter();
   return (
     <div
       key={friend.id}
-      onClick={() =>
-        setExpandedFriendId(expandedFriendId === friend.id ? null : friend.id)
-      }
+      onClick={() => {
+        router.push(`/profile/${friend.id}`);
+      }}
       style={{
         marginBottom: "10px",
       }}
@@ -80,22 +76,42 @@ const FriendElement: React.FC<FriendElementProps> = ({
             style={{
               width: "8px",
               height: "8px",
+              marginRight: showToggle ? "0" : "8px",
               borderRadius: "50%",
               backgroundColor: friend.online ? "#4CAF50" : "#666",
             }}
           />
-          <span
-            style={{
-              transform:
-                expandedFriendId === friend.id
-                  ? "rotate(180deg)"
-                  : "rotate(0deg)",
-              transition: "transform 0.3s ease",
-              color: "#aaa",
-            }}
-          >
-            ▼
-          </span>
+          {showToggle && (
+            <span
+              style={{
+                transform:
+                  expandedFriendId === friend.id
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)",
+                transition: "transform 0.3s ease, color 0.3s ease",
+                color: "#aaa",
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setExpandedFriendId(
+                  expandedFriendId === friend.id ? null : friend.id
+                );
+              }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLElement).style.color = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLElement).style.color = "#aaa";
+              }}
+            >
+              <ExpandMoreIcon
+                style={{
+                  verticalAlign: "middle",
+                }}
+              />
+            </span>
+          )}
         </div>
       </div>
 
