@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron index.js",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": "Ryan Lee",
@@ -20,13 +21,28 @@
   "build": {
     "appId": "com.madeyes.app",
     "productName": "Mad Eyes",
-    "appx": {
-      "applicationId": "MadEyes"
+    "files": [
+      "**/**",
+      "../web/**"
+    ],
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "extraResources": [
+      {
+        "from": "../web/.next",
+        "to": "web/.next"
+      },
+      {
+        "from": "../web/public",
+        "to": "web/public"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.utilities"
     },
     "win": {
-      "target": [
-        "nsis"
-      ],
       "icon": "icon-large.png"
     }
   },

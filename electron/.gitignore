@@ -5,3 +5,4 @@
 /dist
 *.pkg.tar.zst
 /build
+/release
