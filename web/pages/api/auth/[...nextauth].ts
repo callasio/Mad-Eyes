@@ -6,9 +6,6 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      authorization: {
-        url: "https://accounts.google.com/o/oauth2/auth?response_type=code&prompt=consent&access_type=offline",
-      },
     }),
   ],
   callbacks: {
@@ -23,9 +20,6 @@ export default NextAuth({
       session.accessToken = token.accessToken;
       session.idToken = token.idToken;
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      return `${baseUrl}/auth/redirect`;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

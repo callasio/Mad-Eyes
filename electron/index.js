@@ -7,8 +7,6 @@ const { Notification } = require('electron');
 let mainWindow;
 let tray;
 
-app.setAsDefaultProtocolClient('madeyes');
-
 app.on('ready', () => {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
@@ -25,12 +23,6 @@ app.on('ready', () => {
       backgroundThrottling: false,
     },
   });
-
-  app.on('open-url', (event, url) => {
-    event.preventDefault();
-    const authCode = new URL(url).searchParams.get('code');
-    mainWindow.webContents.send('auth-code', authCode);
-  })
 
   app.commandLine.appendSwitch('disable-background-timer-throttling');
 
@@ -70,16 +62,8 @@ app.on('ready', () => {
     }
   });
 
-  mainWindow.webContents.on('did-navigate', (event, url) => {
-    if (url.includes('accounts.google.com')) {
-      event.preventDefault();
-      mainWindow.loadURL("https://madcamp-week2-2-783352439162.asia-northeast3.run.app")
-      require('electron').shell.openExternal(url);
-    }
-  })
-
   // Load the target domain
-  mainWindow.loadURL('https://madcamp-week2-2-783352439162.asia-northeast3.run.app');
+  mainWindow.loadURL('http://localhost:3000'); 
 
   // Optional: Clear cache on app start
   session.defaultSession.clearCache();
