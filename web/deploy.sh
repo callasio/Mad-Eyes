@@ -1,3 +1,4 @@
+gcloud config set project "madcamp-week-2"
 docker build . -t nextjs-app:latest
 docker tag nextjs-app:latest gcr.io/madcamp-week-2/nextjs-app:latest
 docker push gcr.io/madcamp-week-2/nextjs-app:latest

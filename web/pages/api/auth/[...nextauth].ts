@@ -25,7 +25,7 @@ export default NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
-      return `${baseUrl}/api/auth/redirect`;
+      return `${baseUrl}/auth/redirect`;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

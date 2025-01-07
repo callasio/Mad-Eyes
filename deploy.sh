@@ -1,3 +1,4 @@
+gcloud config set project "madcampweek24"
 docker build . -t fastapi-app:latest
 docker tag fastapi-app:latest gcr.io/madcampweek24/fastapi-app:latest
 docker push gcr.io/madcampweek24/fastapi-app:latest
