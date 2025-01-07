@@ -11,10 +11,6 @@
   "license": "ISC",
   "description": "Protect you eyes",
   "devDependencies": {
-    "@electron-forge/cli": "^7.6.0",
-    "@electron-forge/maker-deb": "^7.6.0",
-    "@electron-forge/maker-dmg": "^7.6.0",
-    "@electron-forge/maker-squirrel": "^7.6.0",
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8"
   },
@@ -44,34 +40,6 @@
     },
     "win": {
       "icon": "icon-large.png"
-    }
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "tray-icon.png"
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "Mad Eyes"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-dmg",
-          "config": {
-            "icon": "tray-icon.png",
-            "format": "ULFO"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "platforms": [
-            "linux"
-          ]
-        }
-      ]
     }
   }
 }

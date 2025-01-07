@@ -8,21 +8,37 @@ const { exec } = require("child_process");
 let mainWindow;
 let tray;
 
-exec(
-  "npx --yes next start",
-  { cwd: path.join(__dirname, "../web") },
-  (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing command: ${error}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
+const checkServerRunning = (url, callback) => {
+  http
+    .get(url, (res) => {
+      if (res.statusCode === 200) {
+        callback(true);
+      }
+    })
+    .on("error", () => {
+      callback(false);
+    });
+};
+
+checkServerRunning("http://localhost:3000", (isRunning) => {
+  if (!isRunning) {
+    exec(
+      "npx --yes next start",
+      { cwd: path.join(__dirname, "../web") },
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error executing command: ${error}`);
+          return;
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
+      }
+    );
   }
-);
+});
 
 const waitForServer = (url, callback) => {
   const interval = setInterval(() => {
