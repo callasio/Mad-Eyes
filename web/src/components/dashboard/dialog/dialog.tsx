@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/auth/AuthProvider";
 import CloseIcon from "@mui/icons-material/Close";
-import FriendsFrame from "./friends";
 import { Friend } from "@/app/dashboard/page";
-import SelectedFriendFrame from "./selectedFriend";
-import GradientButton from "@/components/GradientButton";
 
 interface User {
   id: string;
@@ -21,7 +18,6 @@ interface DialogProps {
   setShowDialog: (show: boolean) => void;
 }
 
-
 const DashboardDialog: React.FC<DialogProps> = ({
   user,
   friends,
@@ -30,8 +26,6 @@ const DashboardDialog: React.FC<DialogProps> = ({
   const [showFriends, setShowFriends] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
   const router = useRouter();
-  
-  
 
   const getElapsedTime = (start: Date) => {
     const now = new Date();
@@ -47,11 +41,14 @@ const DashboardDialog: React.FC<DialogProps> = ({
     return `${minutes} minutes`;
   };
 
-  {/* Search State */}
-  const [searchQuery, setSearchQuery] = useState('');
-  const filteredFriends = friends.filter(friend => 
-    friend.nickname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    friend.email.toLowerCase().includes(searchQuery.toLowerCase())
+  {
+    /* Search State */
+  }
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredFriends = friends.filter(
+    (friend) =>
+      friend.nickname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      friend.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -59,7 +56,7 @@ const DashboardDialog: React.FC<DialogProps> = ({
       style={{
         position: "absolute",
         top: "70px",
-        right: "20px",  // left: "20px"를 right: "20px"로 변경
+        right: "20px", // left: "20px"를 right: "20px"로 변경
         backgroundColor: "#2D2D2D",
         borderRadius: "12px",
         padding: "20px",
@@ -145,7 +142,6 @@ const DashboardDialog: React.FC<DialogProps> = ({
           {user?.email}
         </div>
       </div>
-      
 
       <button
         onClick={() => setShowFriends(!showFriends)}
@@ -165,77 +161,81 @@ const DashboardDialog: React.FC<DialogProps> = ({
       >
         {showFriends ? "Hide Friends" : "Show Friends"}
       </button>
-      
-      {showFriends && (
-      <>
 
-        {/* Search Bar */}
-        <div style={{
-          width: '100%',
-          marginBottom: '15px',
-          position: 'relative'
-        }}>
-          {/* Search icon */}
-          <div style={{
-            position: 'absolute',
-            right: '12px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#999'
-          }}>
-            🔍
-          </div>
-          <input
-            type="text"
-            placeholder="Search friends..."
+      {showFriends && (
+        <>
+          {/* Search Bar */}
+          <div
             style={{
-              width: '100%',
-              padding: '8px 12px',
-              backgroundColor: '#383838',
-              border: 'none',
-              borderRadius: '8px',
-              color: 'white',
-              fontSize: '14px',
-              outline: 'none'
+              width: "100%",
+              marginBottom: "15px",
+              position: "relative",
             }}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div style={{
-            position: 'absolute',
-            right: '12px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#999'
-          }}>
-            🔍
+          >
+            {/* Search icon */}
+            <div
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#999",
+              }}
+            >
+              🔍
+            </div>
+            <input
+              type="text"
+              placeholder="Search friends..."
+              style={{
+                width: "100%",
+                padding: "8px 12px",
+                backgroundColor: "#383838",
+                border: "none",
+                borderRadius: "8px",
+                color: "white",
+                fontSize: "14px",
+                outline: "none",
+              }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#999",
+              }}
+            >
+              🔍
+            </div>
           </div>
-        </div>
-          <FriendsFrame friends={filteredFriends} setSelectedFriend={setSelectedFriend} />
         </>
       )}
 
-      
       {/* Profile 버튼을 왼쪽으로 이동 */}
-    <button 
-    style={{
-      width: "100%",
-      padding: "8px",
-      backgroundColor: "#8176AF",
-      border: "none",
-      borderRadius: "20px",
-      color: "white",
-      cursor: "pointer",
-      fontSize: "14px",
-      fontWeight: "bold",
-      marginTop: "4px",
-      marginBottom: "4px",
-    }}onClick={() => {
-      router.push("/profile/" + user?.id);
-    }}>
-      Show Profile
-    </button>
-
+      <button
+        style={{
+          width: "100%",
+          padding: "8px",
+          backgroundColor: "#8176AF",
+          border: "none",
+          borderRadius: "20px",
+          color: "white",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: "bold",
+          marginTop: "4px",
+          marginBottom: "4px",
+        }}
+        onClick={() => {
+          router.push("/profile/" + user?.id);
+        }}
+      >
+        Show Profile
+      </button>
     </div>
   );
 };
