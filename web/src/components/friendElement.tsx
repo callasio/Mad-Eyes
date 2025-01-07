@@ -7,6 +7,7 @@ interface FriendElementProps {
   friend: Friend;
   showToggle?: boolean;
   expandedFriendId?: string | null;
+  gray?: boolean;
   setExpandedFriendId?: (id: string | null) => void;
 }
 
@@ -14,6 +15,7 @@ const FriendElement: React.FC<FriendElementProps> = ({
   friend,
   expandedFriendId = null,
   showToggle = true,
+  gray = false,
   setExpandedFriendId = () => {},
 }) => {
   const router = useRouter();
@@ -31,7 +33,7 @@ const FriendElement: React.FC<FriendElementProps> = ({
         style={{
           padding: "12px",
           borderRadius: "8px",
-          backgroundColor: "#4D4766",
+          backgroundColor: gray ? "#555" : "#4D4766",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
@@ -78,7 +80,11 @@ const FriendElement: React.FC<FriendElementProps> = ({
               height: "8px",
               marginRight: showToggle ? "0" : "8px",
               borderRadius: "50%",
-              backgroundColor: friend.online ? "#4CAF50" : "#666",
+              backgroundColor: friend.online
+                ? "#4CAF50"
+                : gray
+                ? "#888"
+                : "#666",
             }}
           />
           {showToggle && (

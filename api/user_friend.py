@@ -131,4 +131,8 @@ def user_friend_init(app: FastAPI):
       cursor.execute("DELETE FROM user_friends WHERE id=? AND friend_id=?", (user_google.google_id, friend_id))
     )
 
+    db_execute(lambda cursor:
+      cursor.execute("DELETE FROM user_friends WHERE id=? AND friend_id=?", (friend_id, user_google.google_id))
+    )
+
     return {"status": "success"}
