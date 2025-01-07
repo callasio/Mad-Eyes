@@ -3,7 +3,8 @@ import React from "react";
 
 interface FriendsProps {
   friends: Friend[];
-  setSelectedFriend: (friend: Friend) => void;
+  setSelectedFriend: (friend: Friend | null) => void;
+  
 }
 
 const FriendsFrame: React.FC<FriendsProps> = ({

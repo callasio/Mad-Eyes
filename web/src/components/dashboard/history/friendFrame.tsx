@@ -10,6 +10,8 @@ import { themeColor } from "@/constants/colors";
 import { Friend } from "@/app/dashboard/page";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SelectedFriendFrame from "../dialog/selectedFriend";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 
@@ -55,8 +57,6 @@ interface TabButtonProps {
    const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
    const [position, setPosition] = useState<{top: number, left: number}>({top: 0, left: 0});
 
-
- 
    const [friendsData, setFriendsData] = useState<Friend[]>([
     {
       id: "1", 
@@ -119,6 +119,12 @@ const handleRejectRequest = (id: string) => {
   // Add your reject logic here
   console.log('Rejected request:', id);
 };
+{/* Search State */}
+
+const filteredFriends = friendsData.filter((friend)=> 
+  friend.nickname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  friend.email.toLowerCase().includes(searchQuery.toLowerCase())
+);
  
   return (
     <div style={{ flex: 1 }}>
@@ -220,13 +226,14 @@ const handleRejectRequest = (id: string) => {
                       🔍
                     </div>
                   </div>
+                  
                 
                   <div style={{
                     marginTop: "10px",
                     borderTop: "1px solid #444",
                     paddingTop: "10px",
                   }}>
-                    {friendsData.map((friend) => (
+                    {filteredFriends.map((friend) => (
                       <div
                         key={friend.id}
                         onClick={(e: React.MouseEvent<HTMLDivElement>) => {
@@ -325,7 +332,7 @@ const handleRejectRequest = (id: string) => {
             </div>
             )}
 
-              {activeTab === "requests" && (
+            {activeTab === "requests" && (
                 <div style={{ color: "white", paddingTop: "3px", textAlign: "center" }}>
                  {requestsData.map((request) => (
         <div
@@ -377,7 +384,7 @@ const handleRejectRequest = (id: string) => {
             <button
               onClick={() => handleAcceptRequest(request.id)}
               style={{
-                padding: "6px 12px",
+                padding: "5px 7px",
                 backgroundColor: "#8176AF",
                 border: "none",
                 borderRadius: "6px",
@@ -386,12 +393,13 @@ const handleRejectRequest = (id: string) => {
                 fontSize: "12px",
               }}
             >
-              o
+               <CheckIcon fontSize="small" />
+
             </button>
             <button
               onClick={() => handleRejectRequest(request.id)}
               style={{
-                padding: "6px 12px",
+                padding: "5px 7px",
                 backgroundColor: "#E86452",
                 border: "none",
                 borderRadius: "6px",
@@ -400,7 +408,7 @@ const handleRejectRequest = (id: string) => {
                 fontSize: "12px",
               }}
             >
-           x
+           <CloseIcon fontSize="small" />
          </button>
        </div>
      </div>
