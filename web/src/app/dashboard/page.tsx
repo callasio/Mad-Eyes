@@ -20,35 +20,11 @@ export interface Friend {
   id: string;
   nickname: string;
   email: string;
-  isOnline: boolean;
-  lastSession?: {
-    start: Date;
-    end?: Date; // undefined if still online
-  };
+  profilePicture?: string;
+  isOnline?: boolean;
+  start?: string;
+  duration?: number;
 }
-
-// Add this after your existing mockSignupData
-const mockFriends: Friend[] = [
-  {
-    id: "1",
-    nickname: "Sarah",
-    email: "sarah@example.com",
-    isOnline: true,
-    lastSession: {
-      start: new Date(Date.now() - 3600000), // Started 1 hour ago
-    },
-  },
-  {
-    id: "2",
-    nickname: "Mike",
-    email: "mike@example.com",
-    isOnline: true,
-    lastSession: {
-      start: new Date(Date.now() - 7200000), // Started 2 hours ago
-      end: new Date(Date.now() - 3600000), // Ended 1 hour ago
-    },
-  },
-];
 
 export default function WelcomePage({}: WelcomePageProps) {
   const { data: session } = useSession();
@@ -162,7 +138,7 @@ export default function WelcomePage({}: WelcomePageProps) {
         {showDialog && (
           <DashboardDialog
             user={user!}
-            friends={mockFriends}
+            friends={[]}
             setShowDialog={setShowDialog}
           />
         )}
