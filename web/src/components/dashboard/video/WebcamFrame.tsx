@@ -90,8 +90,10 @@ const VideoFrame: React.FC = () => {
           );
 
           frameCount += 1;
-          const sizeMutiplier = 1 + 0.1 * Math.sin(frameCount / 10);
+          const sizeMutiplier = (1 + 0.05 * Math.sin(frameCount / 10)) * 1.2;
           ctx.beginPath();
+          ctx.strokeStyle = themeColor.bright;
+          ctx.lineWidth = 2;
 
           ctx.arc(
             leftEyeCanvasCenter.x,
@@ -100,8 +102,9 @@ const VideoFrame: React.FC = () => {
             0,
             Math.PI * 2
           );
-          ctx.fillStyle = themeColor.bright;
-          ctx.fill();
+          ctx.stroke();
+          ctx.closePath();
+          ctx.beginPath();
 
           ctx.arc(
             rightEyeCanvasCenter.x,
@@ -110,8 +113,7 @@ const VideoFrame: React.FC = () => {
             0,
             Math.PI * 2
           );
-          ctx.fillStyle = themeColor.bright;
-          ctx.fill();
+          ctx.stroke();
         }
 
         animationId = requestAnimationFrame(render);

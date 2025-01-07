@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS blink_event (
   record_id TEXT NOT NULL,
   minutes REAL NOT NULL,
   count INTEGER NOT NULL,
-  PRIMARY KEY (id, record_id, minutes)
+  PRIMARY KEY (id, record_id, minutes),
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 """,
 """

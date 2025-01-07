@@ -14,7 +14,9 @@ import ImageForm from "@/components/signup/ImageForm";
 import GradientButton from "@/components/GradientButton";
 import NicknameForm from "@/components/signup/NicknameForm";
 import { postUserUpdate } from "@/api/user/postUserUpdate";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import SignOutButton from "@/constants/signOutButton";
+import { postUserUnregister } from "@/api/user/postUserUnregister";
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
@@ -58,7 +60,7 @@ const ProfilePage: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             flex: 1,
-            gap: 30,
+            gap: 10,
             marginBottom: 50,
             alignItems: "center",
           }}
@@ -67,9 +69,12 @@ const ProfilePage: React.FC = () => {
             profileImage={profileImage}
             setProfileImage={setProfileImage}
           />
-          <NicknameForm nickname={userName} setNickname={setUserName} />
           <div style={{ flex: 1 }} />
-          <GradientButton
+          <NicknameForm nickname={userName} setNickname={setUserName} />
+          <div style={{ flex: 2 }} />
+          <SignOutButton
+            color="#8176AF"
+            text="Save"
             onClick={async () => {
               session &&
                 postUserUpdate(userName, profileImage, session).then(() => {
@@ -78,9 +83,18 @@ const ProfilePage: React.FC = () => {
                   });
                 });
             }}
-          >
-            Save
-          </GradientButton>
+          />
+          <SignOutButton onClick={() => signOut()} />
+          <SignOutButton
+            dialog
+            text="Delete Account"
+            onClick={async () => {
+              session &&
+                postUserUnregister(session).then(() => {
+                  signOut();
+                });
+            }}
+          />
         </div>
       </GradientFill>
     </main>

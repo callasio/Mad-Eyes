@@ -1,5 +1,7 @@
 "use client";
 
+import { signIn } from "next-auth/react";
+
 interface MainContentProps {}
 
 export default function MainContent({}: MainContentProps) {
@@ -61,7 +63,7 @@ export default function MainContent({}: MainContentProps) {
           marginLeft: "10px",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         }}
-        onClick={() => alert("Button clicked!")} // 버튼 클릭 동작
+        onClick={() => signIn()} // 버튼 클릭 동작
       >
         <img
           src="/rec_button.svg" // SVG 파일 경로

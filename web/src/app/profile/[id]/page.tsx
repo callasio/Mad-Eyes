@@ -10,9 +10,8 @@ import Header2 from "@/components/typography/Header2";
 import Separator from "@/components/signup/Separator";
 import { getUserFromId } from "@/api/user/getUserFromId";
 import { UserData } from "@/api/user/getUser";
-import ImageForm from "@/components/signup/ImageForm";
-import GradientButton from "@/components/GradientButton";
-import SignOutButton from "@/constants/signOutButton";
+import EditIcon from "@mui/icons-material/Edit";
+import { Edit } from "@mui/icons-material";
 
 const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
   params,
@@ -60,99 +59,109 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
         background: themeColor.primary,
       }}
     >
-      <GradientFill>
-        <Header2 text="MY PROFILE" />
-        <Separator />
+      <div
+        style={{
+          position: "relative",
+          width: "720px",
+          height: "540px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {user?.id === id && (
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "30px",
+              cursor: "pointer",
+            }}
+            onClick={() => router.push("/profile/edit")}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
+                gap: "5px",
+                cursor: "pointer",
+                color: "#9A8BC3", // Slightly brighter color
+                fontWeight: "bold",
+              }}
+            >
+              <EditIcon />
+              Edit Profile
+            </div>
+          </div>
+        )}
+        <img
+          style={{
+            position: "absolute",
+            border: "2px solid #FFFFFF",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            top: "-50px",
+            left: "auto",
+            right: "auto",
+            width: "150px",
+            height: "150px",
+            objectFit: "cover",
+            borderRadius: "50%",
+          }}
+          src={userData.profilePicture || ""}
+        />
         <div
           style={{
+            background: "radial-gradient(circle, #403A5F, #211E2E)",
+            padding: "20px",
+            paddingTop: "80px",
+            borderRadius: "16px",
+            border: "1px solid #FFFFFF",
+            width: "100%",
+            height: "100%",
             display: "flex",
             flexDirection: "column",
-            minHeight: "100vh", // Ensures container takes full height
             alignItems: "center",
           }}
         >
+          <Header2 text={userData.nickname} />
+          <div
+            style={{
+              marginTop: "0px",
+              fontSize: "17px",
+              marginBottom: "20px",
+              color: "#ccc",
+            }}
+          >
+            {userData.email}
+          </div>
+          <Separator />
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 10,
+              width: "100%",
+              height: "100%",
+              gap: "40px",
+              flexDirection: "row",
+              padding: "20px 40px 20px 40px",
             }}
           >
-            <ImageForm
-              profileImage={userData.profilePicture || ""}
-              imagePlaceholderText={userData.nickname}
-            />
-            <div
-              style={{ marginTop: "0px", fontSize: "22px", fontWeight: "bold" }}
-            >
-              {userData.nickname}
-            </div>
             <div
               style={{
-                marginTop: "0px",
-                fontSize: "17px",
-                marginBottom: "20px",
-                color: "#ccc",
+                flex: 1,
+                background: "#000",
               }}
-            >
-              {userData.email}
-            </div>
-            {user?.id === id && (
-              <button
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  backgroundColor: "#8176AF",
-                  border: "none",
-                  borderRadius: "20px",
-                  color: "white",
-                  cursor: "pointer",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  marginTop: "5px",
-                  marginBottom: "5px",
-                  paddingLeft: "50px",
-                  paddingRight: "50px",
-                }}
-                onClick={() => router.push("/profile/edit")}
-              >
-                <div>Edit Profile</div>
-              </button>
-            )}
-            <button
+            ></div>
+            <div
               style={{
-                width: "100%",
-                padding: "8px",
-                backgroundColor: "#8176AF",
-                border: "none",
-                borderRadius: "20px",
-                color: "white",
-                cursor: "pointer",
-                fontSize: "20px",
-                fontWeight: "bold",
-                marginTop: "5px",
-                marginBottom: "5px",
-                paddingLeft: "50px",
-                paddingRight: "50px",
+                flex: 1,
+                background: "#000",
               }}
-              onClick={() => router.push("/manage")}
-            >
-              <div>Manage Friends</div>
-            </button>
-          </div>
-
-          <div
-            style={{
-              marginTop: "100px",
-              marginBottom: "40px",
-              padding: "20px",
-            }}
-          >
-            <SignOutButton />
+            ></div>
           </div>
         </div>
-      </GradientFill>
+      </div>
     </main>
   );
 };

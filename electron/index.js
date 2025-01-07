@@ -1,6 +1,8 @@
 const { app, BrowserWindow, session, Tray, Menu } = require('electron');
 const path = require('path');
 const { screen } = require('electron');
+const http = require('http');
+const { Notification } = require('electron');
 
 let mainWindow;
 let tray;
@@ -17,10 +19,29 @@ app.on('ready', () => {
       contextIsolation: true, // Enable context isolation
       enableRemoteModule: false, // Disable remote module
       partition: 'persist:main', // Ensure cookies and storage persist
+      backgroundThrottling: false,
     },
   });
 
+  app.commandLine.appendSwitch('disable-background-timer-throttling');
+
   mainWindow.setMenu(null);
+
+  const server = http.createServer((req, res) => {
+    if (req.method === 'GET') {
+      new Notification({
+        title: 'Eyes Warning!',
+        body: 'You\'re blinking too unfrequently.',
+      }).show();
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Hello, World!\n');
+  });
+
+  server.listen(3478, '127.0.0.1', () => {
+    console.log('Server running at http://127.0.0.1:3478/');
+  });
 
   mainWindow.setIcon(path.join(__dirname, 'tray-icon.png'));
 
@@ -72,8 +93,9 @@ app.on('ready', () => {
 
   // Handle minimize to tray on close
   mainWindow.on('close', (event) => {
+    event.preventDefault();
     if (!app.isQuiting) {
-      event.preventDefault();
+      console.log('hiding');
       mainWindow.hide();
     }
   });

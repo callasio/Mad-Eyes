@@ -2,6 +2,7 @@ import { FaceLandmarkerResult } from "@mediapipe/tasks-vision";
 import { postBlinks } from "@/api/blinks/postBlinks";
 import { Session } from "next-auth";
 import { getEyesAreaRatio, getEyesCenter, getEyesLength, Point } from "./eyes";
+import { sendAlert } from "./alertEyes";
 
 const HISTORY_SIZE = 200;
 export const UPDATE_INTERVAL_MIN = 0.2;
@@ -64,6 +65,9 @@ export default class RecordSession {
 
     if (this.successTime > this.serverUploadTimeMinute * 60 * 1000) {
       this.serverUploadTimeMinute += UPDATE_INTERVAL_MIN;
+      if (this.blinkCounts.at(-1)! < 10) {
+        sendAlert();
+      }
       postBlinks(this.startTimeIso8601, this.elapsedTime / 60 / 1000, this.blinkCounts.at(-1)!, this.session)
       this.blinkCounts.push(0);
     }
