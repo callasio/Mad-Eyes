@@ -21,7 +21,7 @@ export interface Friend {
   nickname: string;
   email: string;
   profilePicture?: string;
-  isOnline?: boolean;
+  online?: boolean;
   start?: string;
   duration?: number;
 }

@@ -1,10 +1,10 @@
 import { Session } from "next-auth";
 import { getUrl } from "../utils/url";
 
-export async function postFriendAccept(id: string, session: Session): Promise<{
+export async function deleteFriendInvite(id: string, session: Session): Promise<{
   status: "success" | "not_found" | "error";
 }> {
-  const res = await fetch(getUrl('friend', id), {
+  const res = await fetch(getUrl('friend', 'invite', id), {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${session?.idToken}`,

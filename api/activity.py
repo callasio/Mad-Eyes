@@ -3,6 +3,7 @@ from fastapi import Depends, FastAPI
 from utils.sql_utils import db_execute
 from utils.google_auth import get_current_user, oauth2_scheme
 from datetime import datetime, timedelta
+import pytz
 
 
 def activity_init(app: FastAPI):
@@ -38,20 +39,21 @@ def activity_init(app: FastAPI):
   @app.get("/record/current/{user_id}")
   async def get_current_record(user_id: str):
     result: list = db_execute(lambda cursor:
-      cursor.execute("SELECT * FROM blink_event WHERE id=?", (user_id,))
+      cursor.execute("SELECT * FROM blink_event WHERE id=?", (user_id,)).fetchall()
     )
 
-    if result is None:
+    if len(result) == 0:
       return { "status": "success", "record": None }
     
-    latest = min(result, key=lambda x: (x[1], x[2]))
+    latest = max(result, key=lambda x: (x[1], x[2]))
 
-    record_start_time = datetime.fromisoformat(latest[1])
+    korea_tz = pytz.timezone('Asia/Seoul')
+    record_start_time = datetime.fromisoformat(latest[1]).astimezone(korea_tz)
     record_duration = timedelta(minutes=float(latest[2]))
 
     record_last = record_start_time + record_duration
 
-    is_current_session = record_last >= datetime.now() - timedelta(minutes=5)
+    is_current_session = record_last >= datetime.now(korea_tz) - timedelta(minutes=5)
 
     return { "status": "success", "record": {
       "start": latest[1],

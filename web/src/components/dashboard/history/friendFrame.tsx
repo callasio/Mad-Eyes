@@ -15,6 +15,8 @@ import { getRecordCurrentFromId } from "@/api/record/getRecordCurrentFromId";
 import { UserData } from "@/api/user/getUser";
 import { getUserSearch } from "@/api/user/getUserSearch";
 import { postFriendInvite } from "@/api/friend/postFriendInvite";
+import { deleteFriendInvite } from "@/api/friend/deleteFriendInvite";
+import { postFriendAccept } from "@/api/friend/postFriendAccept";
 
 interface TabButtonProps {
   name: string;
@@ -87,11 +89,13 @@ const FriendFrame: React.FC = () => {
     setRequestsData(friendInviteData);
   };
 
+  const [loadAgain, setLoadAgain] = useState(false);
+
   useEffect(() => {
     Promise.all([fetchFriendData(), fetchRequestData()]).then(() => {
       setFriendsLoading(false);
     });
-  }, []);
+  }, [activeTab, loadAgain]);
 
   const [searchFriends, setSearchFriends] = useState<UserData[]>([]);
 
@@ -102,20 +106,21 @@ const FriendFrame: React.FC = () => {
 
     setSearchFriends(searchResult.map((res) => res.user!));
   };
-
   useEffect(() => {
     if (searchQuery.length > 0) fetchSearchFriends(searchQuery);
-  }, [searchQuery]);
+  }, [searchQuery, activeTab, loadAgain]);
 
   // Add these functions to your component
   const handleAcceptRequest = (id: string) => {
-    // Add your accept logic here
-    console.log("Accepted request:", id);
+    postFriendAccept(id, session!).then(() => {
+      setLoadAgain(!loadAgain);
+    });
   };
 
   const handleRejectRequest = (id: string) => {
-    // Add your reject logic here
-    console.log("Rejected request:", id);
+    deleteFriendInvite(id, session!).then(() => {
+      setLoadAgain(!loadAgain);
+    });
   };
   {
     /* Search State */
@@ -265,20 +270,20 @@ const FriendFrame: React.FC = () => {
                             gap: "10px",
                           }}
                         >
-                          <div
+                          <img
                             style={{
                               width: "32px",
                               height: "32px",
                               borderRadius: "50%",
                               backgroundColor: "#8E85B3",
                               display: "flex",
+                              objectFit: "cover",
                               alignItems: "center",
                               justifyContent: "center",
                               color: "white",
                             }}
-                          >
-                            {friend.nickname[0]}
-                          </div>
+                            src={friend.profilePicture || friend.nickname[0]}
+                          />
 
                           <div style={{ flexGrow: 1 }}>
                             <div
@@ -306,7 +311,7 @@ const FriendFrame: React.FC = () => {
                                 width: "8px",
                                 height: "8px",
                                 borderRadius: "50%",
-                                backgroundColor: friend.isOnline
+                                backgroundColor: friend.online
                                   ? "#4CAF50"
                                   : "#666",
                               }}
@@ -351,12 +356,10 @@ const FriendFrame: React.FC = () => {
                                   justifyContent: "center",
                                   gap: "8px",
                                   marginBottom: "16px",
-                                  color: friend.isOnline ? "#4CAF50" : "#666",
+                                  color: friend.online ? "#4CAF50" : "#666",
                                 }}
                               >
-                                {friend.isOnline
-                                  ? "Currently Online"
-                                  : "Offline"}
+                                {friend.online ? "Currently Online" : "Offline"}
                               </div>
 
                               <div
@@ -366,42 +369,54 @@ const FriendFrame: React.FC = () => {
                                   padding: "0 16px",
                                 }}
                               >
-                                <div>
-                                  <div
-                                    style={{
-                                      color: "#aaa",
-                                      marginBottom: "4px",
-                                    }}
-                                  >
-                                    Started
-                                  </div>
-                                  <div
-                                    style={{ color: "white", fontSize: "16px" }}
-                                  >
-                                    {friend.start &&
-                                      new Date(
-                                        friend.start!
-                                      ).toLocaleTimeString([], {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })}
-                                  </div>
-                                </div>
-                                <div>
-                                  <div
-                                    style={{
-                                      color: "#aaa",
-                                      marginBottom: "4px",
-                                    }}
-                                  >
-                                    Duration
-                                  </div>
-                                  <div
-                                    style={{ color: "white", fontSize: "16px" }}
-                                  >
-                                    {friend.duration && friend.duration}
-                                  </div>
-                                </div>
+                                {friend.duration && (
+                                  <>
+                                    <div>
+                                      <div
+                                        style={{
+                                          color: "#aaa",
+                                          marginBottom: "4px",
+                                        }}
+                                      >
+                                        Started
+                                      </div>
+                                      <div
+                                        style={{
+                                          color: "white",
+                                          fontSize: "16px",
+                                        }}
+                                      >
+                                        {friend.start &&
+                                          new Date(
+                                            friend.start!
+                                          ).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                          })}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div
+                                        style={{
+                                          color: "#aaa",
+                                          marginBottom: "4px",
+                                        }}
+                                      >
+                                        Duration
+                                      </div>
+                                      <div
+                                        style={{
+                                          color: "white",
+                                          fontSize: "16px",
+                                        }}
+                                      >
+                                        {friend.duration &&
+                                          Math.round(friend.duration) +
+                                            " minutes"}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -485,20 +500,23 @@ const FriendFrame: React.FC = () => {
                             flex: 1,
                           }}
                         >
-                          <div
+                          <img
+                            src={
+                              searchedUser.profilePicture ||
+                              searchedUser.nickname[0]
+                            }
                             style={{
                               width: "32px",
                               height: "32px",
                               borderRadius: "50%",
                               backgroundColor: "#8E85B3",
                               display: "flex",
+                              objectFit: "cover",
                               alignItems: "center",
                               justifyContent: "center",
                               color: "white",
                             }}
-                          >
-                            {searchedUser.nickname[0]}
-                          </div>
+                          />
                           <div>
                             <div
                               style={{
@@ -584,7 +602,8 @@ const FriendFrame: React.FC = () => {
                           flex: 1,
                         }}
                       >
-                        <div
+                        <img
+                          src={request.profilePicture || request.nickname[0]}
                           style={{
                             width: "32px",
                             height: "32px",
@@ -593,11 +612,10 @@ const FriendFrame: React.FC = () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
+                            objectFit: "cover",
                             color: "white",
                           }}
-                        >
-                          {request.nickname[0]}
-                        </div>
+                        />
                         <div>
                           <div
                             style={{
