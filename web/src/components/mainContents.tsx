@@ -20,6 +20,7 @@ export default function MainContent({}: MainContentProps) {
     >
       <h1
         style={{
+          marginTop: "85px",
           fontSize: "48px",
           fontWeight: "bold",
           textAlign: "left",

@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Copy the environment file
+COPY .env.local .env
+
 # Set environment variable
 ENV PORT=8080
 

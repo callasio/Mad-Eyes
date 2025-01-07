@@ -7,20 +7,29 @@ const Header = () => {
   return (
     <header
       style={{
+        position: "fixed",
+        width: "100%",
         backgroundColor: "#302C42",
+        zIndex: 1000,
         height: "65px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+        justifyContent: "space-between", // 좌측 Welcome Back과 우측 Sign Out 버튼 배치
         padding: "0 20px",
         color: "white",
       }}
     >
-      <h1 style={{ margin: 0, fontFamily: 'Montserrat, sans-serif',
-             fontWeight: "bold",
-             fontSize: "25px",
-             marginLeft: "8px",
-             marginTop: "10px"}}>
+      <h1
+        style={{
+          margin: 0,
+          fontFamily: "Montserrat, sans-serif",
+          fontWeight: "bold",
+          fontSize: "25px",
+          marginLeft: "8px",
+          marginTop: "10px",
+        }}
+      >
         Mad Eyes
       </h1>
       <div style={{ marginLeft: "auto" }}>
