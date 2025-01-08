@@ -15,16 +15,36 @@
 
 
 
+# MADEYES
 
+### Healthy Blinks, Happy Eyes.
 
-https://github.com/user-attachments/assets/3abf7a14-a08c-4205-b63d-baecf843b01a
+### Time to Blink!
 
+## 이런 사람들에게 추천해요!
 
+- **장시간 모니터**로 작업하는 사람들
+- **안구건조증**이 심한 사람들
 
+## 기능
+
+- 자동 눈 깜빡임 탐지
+- 눈 깜빡임 측정/기록
+- 눈을 덜 깜빡일 때 알림 보내기
+- 친구 추가/삭제
 
 https://github.com/user-attachments/assets/9aba8eb6-5173-4b96-ba47-5069abf74388
 
 
+https://github.com/user-attachments/assets/3abf7a14-a08c-4205-b63d-baecf843b01a
+
+## 팀원
+
+| 이민욱 | 김민지 |
+|:---:|:---:|
+| KAIST 새내기과정학부 | 숙명여대 IT공학전공 |
+| ryan@sparcs.org | navygrace8389@gmail.com  |
+| [Github Profile](https://github.com/callasio) | [Github Profile](https://github.com/mjth1s1s) |
 
 ## Supported Platforms
 
