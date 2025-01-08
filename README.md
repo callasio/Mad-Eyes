@@ -11,8 +11,8 @@
 ![gcp](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
 
 
+![image](https://github.com/user-attachments/assets/88ee7a14-364c-4496-9d53-ccbdede84d46)
 
-![Screenshot_20250108_190219](https://github.com/user-attachments/assets/4de23545-4a72-402b-b018-9589d0aed8e2)
 
 ![Screenshot_20250108_190712](https://github.com/user-attachments/assets/52c5a9bb-1cdc-4ba5-bc25-2974cc0f1f7f)
 
