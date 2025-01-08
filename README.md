@@ -11,7 +11,6 @@
 ![gcp](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
 
 
-![image](https://github.com/user-attachments/assets/88ee7a14-364c-4496-9d53-ccbdede84d46)
 
 
 
@@ -31,6 +30,8 @@
 - 자동 눈 깜빡임 탐지
 - 눈 깜빡임 측정/기록
 - 눈을 덜 깜빡일 때 알림 보내기
+
+![image](https://github.com/user-attachments/assets/88ee7a14-364c-4496-9d53-ccbdede84d46)
 - 친구 추가/삭제
 
 https://github.com/user-attachments/assets/9aba8eb6-5173-4b96-ba47-5069abf74388
