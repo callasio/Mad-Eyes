@@ -1,14 +1,13 @@
 const { app, BrowserWindow, session, Tray, Menu } = require("electron");
 const path = require("path");
-const { screen } = require("electron");
 const http = require("http");
 const { Notification } = require("electron");
-const { exec } = require("child_process");
 
 let mainWindow;
 let tray;
 
 app.on("ready", () => {
+  const { screen } = require("electron");
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
 
@@ -24,6 +23,8 @@ app.on("ready", () => {
       backgroundThrottling: false,
     },
   });
+
+  mainWindow.setIcon(path.join(__dirname, "tray-icon.png"));
 
   app.commandLine.appendSwitch("disable-background-timer-throttling");
 
@@ -44,8 +45,6 @@ app.on("ready", () => {
   server.listen(3478, "127.0.0.1", () => {
     console.log("Server running at http://127.0.0.1:3478/");
   });
-
-  mainWindow.setIcon(path.join(__dirname, "tray-icon.png"));
 
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.webContents.insertCSS(`
@@ -122,5 +121,3 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-
-app.emit("ready");

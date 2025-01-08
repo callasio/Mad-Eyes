@@ -39,7 +39,7 @@
       "category": "public.app-category.utilities"
     },
     "win": {
-      "icon": "icon-large.png"
+      "icon": "icon.ico"
     }
   }
 }
