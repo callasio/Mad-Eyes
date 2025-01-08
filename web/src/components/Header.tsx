@@ -30,7 +30,7 @@ const Header = () => {
           marginTop: "10px",
         }}
       >
-        Mad Eyes
+        MADEYES
       </h1>
       <div style={{ marginLeft: "auto" }}>
         {!session ? (

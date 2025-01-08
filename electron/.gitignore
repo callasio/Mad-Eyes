@@ -6,3 +6,4 @@
 *.pkg.tar.zst
 /build
 /release
+/web

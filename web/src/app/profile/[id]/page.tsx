@@ -149,7 +149,8 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
             }}
             onClick={() => {
               if (!user || !session) return;
-              deleteFriend(user.id, session).then((re) => {
+              console.log("Deleting friend ID:", id);
+              deleteFriend(id!, session).then((re) => {
                 console.log(re.status);
                 setLoadAgain(!loadAgain);
               });
@@ -272,7 +273,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
                   style={{
                     marginTop: "0px",
                     fontSize: "20px",
-                    marginBottom: "5px",
+                    marginBottom: "13px",
                   }}
                 />
               </div>
@@ -357,6 +358,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
                 display: "flex",
                 flexDirection: "column",
                 height: "270px",
+              
               }}
             >
               <div
@@ -365,6 +367,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
                   display: "flex",
                   gap: "5px",
                   paddingLeft: "5px",
+                  
                 }}
               >
                 <PersonIcon />
@@ -373,7 +376,7 @@ const ProfilePage: React.FC<{ params: Promise<{ id: string }> }> = ({
                   style={{
                     marginTop: "0px",
                     fontSize: "20px",
-                    marginBottom: "5px",
+                    marginBottom: "13px",
                   }}
                 />
               </div>

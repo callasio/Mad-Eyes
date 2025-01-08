@@ -19,7 +19,7 @@
     "productName": "Mad Eyes",
     "files": [
       "**/**",
-      "../web/**"
+      "./web/**"
     ],
     "directories": {
       "buildResources": "resources",
@@ -27,12 +27,8 @@
     },
     "extraResources": [
       {
-        "from": "../web/.next",
-        "to": "web/.next"
-      },
-      {
-        "from": "../web/public",
-        "to": "web/public"
+        "from": "./web",
+        "to": "web"
       }
     ],
     "mac": {
